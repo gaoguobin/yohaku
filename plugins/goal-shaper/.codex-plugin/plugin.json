@@ -1,0 +1,35 @@
+{
+  "name": "goal-shaper",
+  "version": "0.1.0",
+  "description": "Shape fuzzy requests into best-practice Codex Goal mode packages.",
+  "author": {
+    "name": "Gaoguobin",
+    "url": "https://github.com/gaoguobin"
+  },
+  "homepage": "https://github.com/gaoguobin/goal-shaper",
+  "repository": "https://github.com/gaoguobin/goal-shaper",
+  "keywords": [
+    "codex",
+    "goal-mode",
+    "skills",
+    "prompting",
+    "requirements"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Goal Shaper",
+    "shortDescription": "Turn rough requests into verified Codex goals",
+    "longDescription": "Use Goal Shaper to decide whether a task belongs in Codex Goal mode, interview for missing outcome and verification details, and produce a copyable /goal package with evidence, assumptions, safety boundaries, and durable guidance candidates.",
+    "developerName": "Gaoguobin",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ],
+    "defaultPrompt": [
+      "Shape this rough request into a Codex /goal.",
+      "Turn my task into a verified Goal mode package."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "goal-shaper-local",
+  "interface": {
+    "displayName": "Goal Shaper Local"
+  },
+  "plugins": [
+    {
+      "name": "goal-shaper",
+      "source": {
+        "source": "local",
+        "path": "./plugins/goal-shaper"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Goal Shaper"
+  short_description: "Shape fuzzy requests into Codex goals"
+  default_prompt: "Use $goal-shaper to turn my rough request into a strong Codex /goal package."
