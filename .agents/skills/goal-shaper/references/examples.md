@@ -2,6 +2,17 @@
 
 Use these as patterns, not as fixed templates.
 
+## Contents
+
+- Too Small
+- Too Broad
+- Bug Fix
+- Performance
+- Research
+- High Risk
+- Long Context
+- Durable Guidance
+
 ## Too Small
 
 User request:
@@ -95,7 +106,7 @@ Short goal:
 User says:
 
 ```text
-Always use pnpm in this repo and never add dependencies without asking.
+Always use this repository's package manager and never add dependencies without asking.
 ```
 
 Response direction:
@@ -103,5 +114,5 @@ Response direction:
 - Do not hide this only inside the goal.
 - Add it to `durable_guidance_candidates`:
   - Candidate destination: `AGENTS.md`
-  - Suggested rule: "Use pnpm for package commands. Ask before adding new
-    production dependencies."
+  - Suggested rule: "Use the repository's package manager for package commands.
+    Ask before adding new production dependencies."

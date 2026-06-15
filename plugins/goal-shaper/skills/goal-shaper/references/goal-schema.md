@@ -3,6 +3,15 @@
 Use this schema for every task type. Avoid domain-specific special cases unless
 they are verifier suggestions.
 
+## Contents
+
+- Suitability
+- Canonical Fields
+- Interview Priority
+- Complexity Levels
+- Safety Pause Triggers
+- Goal Patterns
+
 ## Suitability
 
 Recommend Goal mode when the request has:

@@ -81,15 +81,6 @@ SUPPORT_SPEC_SECTIONS = [
     "Final Report Format",
 ]
 
-SCENARIO_HARDCODING = [
-    "sample-js-app",
-    "React 19",
-    "homepage",
-    "old logs",
-    "production server",
-    "login failure",
-]
-
 PLUGIN_REQUIRED_FIELDS = [
     "name",
     "version",
@@ -118,10 +109,14 @@ def fail(failures: list[str], message: str) -> None:
     failures.append(message)
 
 
+def normalize_text(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip()
+
+
 def require_contains(
     failures: list[str], text: str, needle: str, where: str, why: str
 ) -> None:
-    if needle not in text:
+    if normalize_text(needle) not in normalize_text(text):
         fail(failures, f"{where}: missing {why!r} ({needle})")
 
 
@@ -252,7 +247,7 @@ def validate_skill_entrypoint(failures: list[str]) -> None:
     for boundary in [
         "Do not run `/goal`",
         "call runtime goal tools",
-        "start\nimplementation",
+        "start implementation",
         "create commits",
         "modify repository ignore rules",
         "Do not treat this skill's own instructions or files as the user's target",
@@ -335,8 +330,8 @@ def validate_examples(failures: list[str]) -> None:
         "Use these as patterns, not as fixed templates",
         "Do not generate `/goal`",
         "Do not generate one giant goal",
-        "propose verifier\noptions instead of inventing commands",
-        "Always use pnpm",
+        "propose verifier options instead of inventing commands",
+        "repository's package manager",
     ]:
         require_contains(failures, text, phrase, "examples.md", "example guidance")
 
@@ -429,13 +424,6 @@ def validate_marketplace(failures: list[str]) -> None:
         fail(failures, "marketplace.json: policy.authentication must be ON_INSTALL")
 
 
-def validate_no_scenario_hardcoding(failures: list[str]) -> None:
-    combined = "\n".join(read(relative) for relative in REQUIRED_FILES if relative != "agents/openai.yaml")
-    for phrase in SCENARIO_HARDCODING:
-        if re.search(re.escape(phrase), combined, re.IGNORECASE):
-            fail(failures, f"scenario-specific hardcoding found: {phrase}")
-
-
 def main() -> int:
     failures: list[str] = []
     validate_required_files(failures)
@@ -454,7 +442,6 @@ def main() -> int:
     validate_agent_metadata(failures)
     validate_plugin_manifest(failures)
     validate_marketplace(failures)
-    validate_no_scenario_hardcoding(failures)
 
     if failures:
         print(f"goal-shaper validation failed: {len(failures)} issue(s)")

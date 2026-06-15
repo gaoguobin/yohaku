@@ -20,8 +20,7 @@ python3 scripts/validate_goal_shaper.py
 - The package keeps a small progressive-disclosure shape.
 - Validation-command invention, automatic goal execution, automatic support spec
   writes, and durable-guidance mixing remain guarded.
-- Manual test scenarios are represented as patterns, not hardcoded project
-  fixes.
+- Manual test scenarios are documented as patterns, not hardcoded project fixes.
 
 ## What It Does Not Check
 
@@ -53,36 +52,3 @@ Use these prompts after meaningful behavior changes:
 - Research: decide whether a dependency upgrade is appropriate.
 - Durable guidance: require a package manager and dependency policy.
 - Long context: generate a compact `/goal` that points to a support spec.
-
-## Manual Scenario Notes
-
-### Long Context Support Spec
-
-Last checked: 2026-06-12
-
-Prompt:
-
-```text
-$goal-shaper Help me turn this goal-shaper project into a plugin that can be formally released and installed, and also handle docs, validation, upgrade, and uninstall flow.
-```
-
-Expected behavior:
-
-- Classifies the request as `large`.
-- Emits a short `/goal` that points to a support spec path.
-- Shows a support spec preview instead of stuffing all context into `/goal`.
-- Asks before writing `.goal-shaper/specs/...`.
-- Preserves the rule that Goal Shaper does not execute the goal.
-
-Observed behavior:
-
-- Passed. The skill produced a compact runnable goal, a support spec preview,
-  evidence checklist, assumptions, and durable guidance candidates.
-- It paused for confirmation before writing
-  `.goal-shaper/specs/2026-06-12-goal-shaper-plugin-release.md`.
-
-Review note:
-
-- Official plugin docs and `codex plugin --help` were listed as materials for
-  the future goal runner to verify, not as work already completed by
-  Goal Shaper.

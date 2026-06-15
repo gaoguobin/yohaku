@@ -89,17 +89,12 @@ Open a new thread after reinstalling.
 
 ## Uninstall
 
-Remove the installed plugin:
-
 ```bash
 codex plugin remove goal-shaper@goal-shaper-local --json
-```
-
-If this marketplace was added only for local testing, remove it too:
-
-```bash
 codex plugin marketplace remove goal-shaper-local --json
 ```
+
+Only remove the marketplace if it was added only for Goal Shaper local testing.
 
 ## Release Notes
 

@@ -85,8 +85,6 @@ python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" pl
 
 - [Validation](docs/validation.md)
 - [Plugin packaging](docs/plugin.md)
-- [Release checklist](docs/release.md)
-- [v0 design note](docs/seed/2026-06-12-goal-shaper-design.md)
 
 ## License
 
