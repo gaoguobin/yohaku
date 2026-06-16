@@ -30,7 +30,8 @@ python3 scripts/validate_goal_shaper.py
   after global install or plugin packaging.
 - It does not replace manual scenario testing for long-context support specs.
 - It does not install, reinstall, or remove the plugin from the local Codex
-  configuration.
+  configuration. For an isolated lifecycle smoke, see
+  [Plugin packaging](plugin.md#lifecycle-smoke).
 
 ## Additional Plugin Checks
 

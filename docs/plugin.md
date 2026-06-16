@@ -69,12 +69,21 @@ loaded into the fresh thread context.
 ## Update
 
 For release changes, bump `plugins/goal-shaper/.codex-plugin/plugin.json`
-`version`, run validation, then refresh the installed marketplace and reinstall:
+`version`, run validation, then reinstall from the local marketplace:
 
 ```bash
 python3 scripts/validate_goal_shaper.py
-codex plugin marketplace upgrade goal-shaper-local --json
 codex plugin add goal-shaper@goal-shaper-local --json
+```
+
+`codex plugin marketplace upgrade` is only for Git marketplace snapshots. It is
+not needed for the local repo marketplace and fails for `goal-shaper-local`.
+
+For a Git-backed marketplace, refresh that marketplace before reinstalling:
+
+```bash
+codex plugin marketplace upgrade <marketplace-name> --json
+codex plugin add goal-shaper@<marketplace-name> --json
 ```
 
 For local iteration without a semantic release, use the `plugin-creator`
@@ -95,6 +104,32 @@ codex plugin marketplace remove goal-shaper-local --json
 ```
 
 Only remove the marketplace if it was added only for Goal Shaper local testing.
+
+## Lifecycle Smoke
+
+Use an isolated `CODEX_HOME` to test the CLI lifecycle without changing the
+current user's plugin configuration:
+
+```bash
+tmp_root="$(mktemp -d)"
+mkdir -p "$tmp_root/codex"
+CODEX_HOME="$tmp_root/codex" codex plugin marketplace add "$(pwd)" --json
+CODEX_HOME="$tmp_root/codex" codex plugin list --marketplace goal-shaper-local --available --json
+CODEX_HOME="$tmp_root/codex" codex plugin add goal-shaper@goal-shaper-local --json
+CODEX_HOME="$tmp_root/codex" codex plugin remove goal-shaper@goal-shaper-local --json
+CODEX_HOME="$tmp_root/codex" codex plugin marketplace remove goal-shaper-local --json
+CODEX_HOME="$tmp_root/codex" codex plugin marketplace list --json
+rm -rf "$tmp_root"
+```
+
+Expected result: the plugin appears as available, installs with the manifest
+version, removes cleanly, and the final marketplace list no longer includes
+`goal-shaper-local`. Start a new Codex thread after installing or reinstalling
+in a real user profile.
+
+When `CODEX_HOME` points under `/tmp`, Codex may warn that it is skipping PATH
+alias creation. That warning is expected for this smoke; the plugin lifecycle
+passes when the JSON results show the marketplace and plugin states above.
 
 ## Release Notes
 
