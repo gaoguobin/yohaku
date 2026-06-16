@@ -432,9 +432,9 @@ def validate_plugin_manifest(failures: list[str]) -> None:
         fail(failures, "plugin.json: each default prompt must be a non-empty string <= 128 chars")
 
     for field, expected in {
-        "websiteURL": "https://github.com/gaoguobin/goal-shaper",
-        "privacyPolicyURL": "https://github.com/gaoguobin/goal-shaper/blob/main/docs/privacy.md",
-        "termsOfServiceURL": "https://github.com/gaoguobin/goal-shaper/blob/main/docs/terms.md",
+        "websiteURL": "https://github.com/gaoguobin/yohaku",
+        "privacyPolicyURL": "https://github.com/gaoguobin/yohaku/blob/main/docs/privacy.md",
+        "termsOfServiceURL": "https://github.com/gaoguobin/yohaku/blob/main/docs/terms.md",
         "brandColor": "#1F1B16",
     }.items():
         if interface.get(field) != expected:

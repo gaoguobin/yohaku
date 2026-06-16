@@ -1,13 +1,13 @@
 {
   "name": "goal-shaper",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Shape fuzzy requests into verifiable Codex Goal mode packages.",
   "author": {
     "name": "Gaoguobin",
     "url": "https://github.com/gaoguobin"
   },
-  "homepage": "https://github.com/gaoguobin/goal-shaper",
-  "repository": "https://github.com/gaoguobin/goal-shaper",
+  "homepage": "https://github.com/gaoguobin/yohaku",
+  "repository": "https://github.com/gaoguobin/yohaku",
   "license": "MIT",
   "keywords": [
     "codex",
@@ -31,9 +31,9 @@
       "Shape this rough request into a Codex /goal.",
       "Turn my task into a verifiable Goal mode package."
     ],
-    "websiteURL": "https://github.com/gaoguobin/goal-shaper",
-    "privacyPolicyURL": "https://github.com/gaoguobin/goal-shaper/blob/main/docs/privacy.md",
-    "termsOfServiceURL": "https://github.com/gaoguobin/goal-shaper/blob/main/docs/terms.md",
+    "websiteURL": "https://github.com/gaoguobin/yohaku",
+    "privacyPolicyURL": "https://github.com/gaoguobin/yohaku/blob/main/docs/privacy.md",
+    "termsOfServiceURL": "https://github.com/gaoguobin/yohaku/blob/main/docs/terms.md",
     "brandColor": "#1F1B16",
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/icon.png"

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.5 - 2026-06-16
+
+- Rename the public marketplace source from `gaoguobin/goal-shaper` to
+  `gaoguobin/yohaku` so Codex App marketplace source input matches the Yohaku
+  marketplace identity.
+- Update plugin metadata, install docs, update docs, and release checks to use
+  the Yohaku marketplace repository.
+
 ## 0.1.4 - 2026-06-16
 
 - Rename the repo marketplace catalog to `yohaku`.

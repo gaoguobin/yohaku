@@ -13,8 +13,8 @@ Use this checklist before tagging or sharing a public release.
 - Anonymous users can read the release source:
 
 ```bash
-git ls-remote https://github.com/gaoguobin/goal-shaper.git HEAD
-curl -I -L https://github.com/gaoguobin/goal-shaper
+git ls-remote https://github.com/gaoguobin/yohaku.git HEAD
+curl -I -L https://github.com/gaoguobin/yohaku
 ```
 
 ## Validation
@@ -42,11 +42,11 @@ Before calling a release public-ready, verify both user installation paths:
   installs from the details page, and a new thread can select the skill. If the
   marketplace was added on the same machine, restart Codex App before checking
   the directory.
-- Command line: `codex plugin marketplace add gaoguobin/goal-shaper`,
+- Command line: `codex plugin marketplace add gaoguobin/yohaku`,
   `codex plugin add goal-shaper@yohaku`, and uninstall all work from a clean
   profile or isolated `CODEX_HOME`.
 - Pinned command line works from a clean profile or isolated `CODEX_HOME`:
 
 ```bash
-codex plugin marketplace add gaoguobin/goal-shaper --ref v0.1.4
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.5
 ```

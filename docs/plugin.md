@@ -63,7 +63,7 @@ The user-facing installation paths are documented in `INSTALL.md`.
 - Command line:
 
 ```bash
-codex plugin marketplace add gaoguobin/goal-shaper --json
+codex plugin marketplace add gaoguobin/yohaku --json
 codex plugin list --marketplace yohaku --available --json
 codex plugin add goal-shaper@yohaku --json
 ```

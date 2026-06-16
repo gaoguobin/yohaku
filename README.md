@@ -1,11 +1,18 @@
-# Goal Shaper
+# Yohaku Codex Plugins
 
-Goal Shaper is a Codex skill and plugin package that turns rough requests into
-verifiable Codex Goal mode packages.
+Yohaku is a Codex plugin marketplace. Its first public plugin is Goal Shaper, a
+Codex skill and plugin package that turns rough requests into verifiable Codex
+Goal mode packages.
 
-It helps Codex decide whether Goal mode is appropriate, asks for only the
-missing details that change success or safety, drafts a copyable `/goal`, and
-then stops.
+When adding the marketplace in Codex App or CLI, use this repository as the
+marketplace source:
+
+```text
+gaoguobin/yohaku
+```
+
+After Codex loads the marketplace, it appears as `Yohaku`, and the installable
+plugin appears as `Goal Shaper`.
 
 ## What It Does
 
@@ -41,7 +48,7 @@ The project-scope skill lives at:
 
 ## Use As A Plugin
 
-Goal Shaper is also packaged as a Codex plugin in the `yohaku` marketplace:
+Goal Shaper is packaged as a Codex plugin in the `yohaku` marketplace:
 
 ```text
 plugins/goal-shaper/
@@ -53,7 +60,7 @@ Normal users should install with either the Codex App UI or the CLI. See
 Command-line install:
 
 ```bash
-codex plugin marketplace add gaoguobin/goal-shaper --json
+codex plugin marketplace add gaoguobin/yohaku --json
 codex plugin list --marketplace yohaku --available --json
 codex plugin add goal-shaper@yohaku --json
 ```

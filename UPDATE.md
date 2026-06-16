@@ -29,12 +29,12 @@ reinstall:
 
 ```bash
 codex plugin marketplace remove yohaku --json
-codex plugin marketplace add gaoguobin/goal-shaper --ref v0.1.4 --json
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.5 --json
 codex plugin add goal-shaper@yohaku --json
 codex plugin list --marketplace yohaku --json
 ```
 
-Replace `v0.1.4` with the release tag you want to run.
+Replace `v0.1.5` with the release tag you want to run.
 
 ## Local Development
 
