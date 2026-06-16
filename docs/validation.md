@@ -50,5 +50,6 @@ Use these prompts after meaningful behavior changes:
 - Performance: make a homepage faster without a target metric.
 - High risk: clean production logs or reclaim disk space.
 - Research: decide whether a dependency upgrade is appropriate.
-- Durable guidance: require a package manager and dependency policy.
+- Durable guidance: require a package manager and dependency policy, then check
+  unrelated prompts do not inherit that policy.
 - Long context: generate a compact `/goal` that points to a support spec.

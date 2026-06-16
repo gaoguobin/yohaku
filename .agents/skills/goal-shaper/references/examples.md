@@ -116,3 +116,5 @@ Response direction:
   - Candidate destination: `AGENTS.md`
   - Suggested rule: "Use the repository's package manager for package commands.
     Ask before adding new production dependencies."
+- If no durable rule is explicit in the current request or target evidence,
+  leave `durable_guidance_candidates` empty or say none.

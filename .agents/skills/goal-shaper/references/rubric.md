@@ -37,7 +37,8 @@ Pass criteria:
 - Checkpoint: asks for compact progress logs only, not verbose per-step
   preambles.
 - Pause triggers: covers high-risk actions.
-- Durable guidance: separates reusable repo/team rules from this one goal.
+- Durable guidance: separates reusable repo/team rules from this one goal, and
+  includes only rules traceable to the current request or target evidence.
 
 ## Anti-Patterns
 
@@ -75,6 +76,6 @@ Before responding, verify:
 - The evidence checklist matches the verifier in the `/goal`.
 - Assumptions are not hidden inside success criteria.
 - Durable guidance candidates are not necessary for this single goal to make
-  sense.
+  sense, and are not inherited from prior examples or surrounding instructions.
 - The final response stops after the package or after asking for support spec
   file confirmation.

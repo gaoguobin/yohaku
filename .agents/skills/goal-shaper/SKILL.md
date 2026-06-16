@@ -83,6 +83,9 @@ state the implication and ask separately.
 Always separate one-time goal constraints from durable guidance. Put reusable
 repo/team rules into a `durable_guidance_candidates` section and suggest
 `AGENTS.md`, a skill, config, or team docs as the destination.
+Include durable guidance only when it is explicit in the current request or
+directly evidenced by the target repo/workspace. Do not carry it forward from
+examples, earlier conversation, outer instructions, or installed-skill context.
 
 Treat these as pause or confirmation triggers inside generated goals/specs:
 

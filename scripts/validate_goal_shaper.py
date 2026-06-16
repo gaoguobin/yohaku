@@ -253,6 +253,7 @@ def validate_skill_entrypoint(failures: list[str]) -> None:
         "Do not treat this skill's own instructions or files as the user's target",
         "Do not invent exact validation commands",
         "Always separate one-time goal constraints from durable guidance",
+        "Do not carry it forward from examples",
         "Present the final package and stop",
     ]:
         require_contains(failures, text, boundary, "SKILL.md", "core boundary")
@@ -283,6 +284,7 @@ def validate_rubric(failures: list[str]) -> None:
         "under 4,000 characters",
         "Do not invent",
         "Performance goals that invent",
+        "traceable to the current request or target evidence",
         "A support spec for a tiny one-off task",
         "The final response stops after the package",
     ]:
@@ -332,6 +334,7 @@ def validate_examples(failures: list[str]) -> None:
         "Do not generate one giant goal",
         "propose verifier options instead of inventing commands",
         "repository's package manager",
+        "If no durable rule is explicit in the current request or target evidence",
     ]:
         require_contains(failures, text, phrase, "examples.md", "example guidance")
 
