@@ -1,5 +1,11 @@
 # Goal Shaper Validation
 
+Run the unit tests after changing the validator or its guardrail coverage:
+
+```bash
+python3 -m unittest discover -s tests
+```
+
 Run this after changing the `goal-shaper` skill package:
 
 ```bash
@@ -7,6 +13,11 @@ python3 scripts/validate_goal_shaper.py
 ```
 
 ## What It Checks
+
+The unit tests exercise the validator's parsing helpers, success path, and
+representative failure paths with isolated repository fixtures.
+
+The repository validator checks the current package state:
 
 - Required skill files exist under `.agents/skills/goal-shaper/`.
 - `SKILL.md` keeps the core trigger and stop boundaries.

@@ -66,6 +66,12 @@ Start a new Codex thread after installing or reinstalling the plugin.
 
 ## Validate
 
+Run the unit tests after changing the validator or its guardrail coverage:
+
+```bash
+python3 -m unittest discover -s tests
+```
+
 Run the repository validator after changing the skill, plugin metadata, or
 marketplace metadata:
 
