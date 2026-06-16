@@ -1,6 +1,6 @@
 ---
 name: goal-shaper
-description: Turn rough or fuzzy user requests into best-practice Codex Goal mode packages through adaptive interview, goal suitability triage, /goal drafting, optional support spec generation, evidence checklist, assumptions, and durable-guidance separation. Use when the user asks to create, shape, draft, refine, or evaluate a Codex /goal prompt, convert a short requirement into Goal mode, prepare a long-running Codex task, or decide whether Goal mode is appropriate; stop after producing the goal package and do not run the goal.
+description: Turn rough or fuzzy user requests into verifiable Codex Goal mode packages through adaptive interview, goal suitability triage, /goal drafting, optional support spec generation, evidence checklist, assumptions, and durable-guidance separation. Use when the user asks to create, shape, draft, refine, or evaluate a Codex /goal prompt, convert a short requirement into Goal mode, prepare a long-running Codex task, or decide whether Goal mode is appropriate; stop after producing the goal package and do not run the goal.
 ---
 
 # Goal Shaper
@@ -53,15 +53,20 @@ normal prompt that asks for the missing target.
    - `medium`: compact `/goal` plus evidence checklist.
    - `large`: compact `/goal` plus support spec.
    - `too_broad`: decomposition recommendation instead of a single goal.
-6. Draft the output:
+6. If the user brings back a previous `/goal` result that failed, first triage
+   the evidence before rewriting the package. Separate prompt/package issues,
+   model execution issues, and repo/tooling constraints. Ask for the prior goal,
+   final report, error output, or transcript only when that evidence would change
+   the diagnosis.
+7. Draft the output:
    - User-facing explanation should follow the user's language.
    - The `/goal` and support spec should default to English for Codex
      execution stability.
    - Preserve the user's original intent in a short local-language summary when
      useful.
-7. Run the rubric self-check. Outcome and verification must score 2. Other
+8. Run the rubric self-check. Outcome and verification must score 2. Other
    fields may score 1 only when the assumption is explicit.
-8. Present the final package and stop.
+9. Present the final package and stop.
 
 ## Support Spec Policy
 

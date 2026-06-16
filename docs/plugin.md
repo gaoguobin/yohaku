@@ -1,7 +1,7 @@
 # Goal Shaper Plugin Packaging
 
-Goal Shaper is packaged as a Codex plugin for local or repo marketplace
-installation.
+Goal Shaper is packaged as a Codex plugin for public marketplace installation
+and local development testing.
 
 ## Package Layout
 
@@ -14,6 +14,7 @@ installation.
 plugins/
   goal-shaper/
     .codex-plugin/plugin.json
+    assets/
     skills/
       goal-shaper/
         SKILL.md
@@ -52,34 +53,59 @@ If the system `skill-creator` skill is available, validate the packaged skill:
 python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/goal-shaper/skills/goal-shaper
 ```
 
-## Local Install
+## User Install
 
-These commands write to local Codex plugin configuration. Run them only when
-you are ready to install the repo marketplace into the current Codex setup.
+The user-facing installation paths are documented in `INSTALL.md`.
+
+- Codex App UI: when `Yohaku` is already visible in the plugin directory, open
+  **Plugins**, select `Yohaku` or **Shared with you**, open **Goal Shaper**, then
+  select **Add to Codex**.
+- Command line:
 
 ```bash
-codex plugin marketplace add <repo-path> --json
-codex plugin list --marketplace goal-shaper-local --available --json
-codex plugin add goal-shaper@goal-shaper-local --json
+codex plugin marketplace add gaoguobin/goal-shaper --json
+codex plugin list --marketplace yohaku --available --json
+codex plugin add goal-shaper@yohaku --json
 ```
 
 Start a new Codex thread after installation so the plugin and bundled skill are
 loaded into the fresh thread context.
+Restart Codex App or reopen Codex CLI after adding or refreshing a marketplace
+so the plugin directory reloads it.
+
+## Local Development Install
+
+These commands write to local Codex plugin configuration. Run them only when
+you are ready to install this checkout's repo marketplace into the current
+Codex setup.
+
+```bash
+codex plugin marketplace add <repo-path> --json
+codex plugin list --marketplace yohaku --available --json
+codex plugin add goal-shaper@yohaku --json
+```
+
+Start a new Codex thread after installation so the plugin and bundled skill are
+loaded into the fresh thread context.
+Restart Codex App or reopen Codex CLI after adding or refreshing a marketplace
+so the plugin directory reloads it.
 
 ## Update
 
-For release changes, bump `plugins/goal-shaper/.codex-plugin/plugin.json`
-`version`, run validation, then reinstall from the local marketplace:
+For published releases, refresh the Git marketplace snapshot and reinstall:
 
 ```bash
-python3 scripts/validate_goal_shaper.py
-codex plugin add goal-shaper@goal-shaper-local --json
+codex plugin marketplace upgrade yohaku --json
+codex plugin add goal-shaper@yohaku --json
 ```
 
-`codex plugin marketplace upgrade` is only for Git marketplace snapshots. It is
-not needed for the local repo marketplace and fails for `goal-shaper-local`.
+For release changes, bump `plugins/goal-shaper/.codex-plugin/plugin.json`
+`version`, run validation, publish the repository, then verify the update path.
 
-For a Git-backed marketplace, refresh that marketplace before reinstalling:
+`codex plugin marketplace upgrade` is only for Git marketplace snapshots. It is
+not needed for a local repo marketplace and may fail there.
+
+For another Git-backed marketplace, refresh that marketplace before reinstalling:
 
 ```bash
 codex plugin marketplace upgrade <marketplace-name> --json
@@ -91,7 +117,7 @@ cachebuster helper when available, then reinstall:
 
 ```bash
 python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py" plugins/goal-shaper
-codex plugin add goal-shaper@goal-shaper-local --json
+codex plugin add goal-shaper@yohaku --json
 ```
 
 Open a new thread after reinstalling.
@@ -99,33 +125,33 @@ Open a new thread after reinstalling.
 ## Uninstall
 
 ```bash
-codex plugin remove goal-shaper@goal-shaper-local --json
-codex plugin marketplace remove goal-shaper-local --json
+codex plugin remove goal-shaper@yohaku --json
+codex plugin marketplace remove yohaku --json
 ```
 
 Only remove the marketplace if it was added only for Goal Shaper local testing.
 
 ## Lifecycle Smoke
 
-Use an isolated `CODEX_HOME` to test the CLI lifecycle without changing the
-current user's plugin configuration:
+Use an isolated `CODEX_HOME` to test the local CLI lifecycle without changing
+the current user's plugin configuration:
 
 ```bash
 tmp_root="$(mktemp -d)"
 mkdir -p "$tmp_root/codex"
 CODEX_HOME="$tmp_root/codex" codex plugin marketplace add "$(pwd)" --json
-CODEX_HOME="$tmp_root/codex" codex plugin list --marketplace goal-shaper-local --available --json
-CODEX_HOME="$tmp_root/codex" codex plugin add goal-shaper@goal-shaper-local --json
-CODEX_HOME="$tmp_root/codex" codex plugin remove goal-shaper@goal-shaper-local --json
-CODEX_HOME="$tmp_root/codex" codex plugin marketplace remove goal-shaper-local --json
+CODEX_HOME="$tmp_root/codex" codex plugin list --marketplace yohaku --available --json
+CODEX_HOME="$tmp_root/codex" codex plugin add goal-shaper@yohaku --json
+CODEX_HOME="$tmp_root/codex" codex plugin remove goal-shaper@yohaku --json
+CODEX_HOME="$tmp_root/codex" codex plugin marketplace remove yohaku --json
 CODEX_HOME="$tmp_root/codex" codex plugin marketplace list --json
 rm -rf "$tmp_root"
 ```
 
 Expected result: the plugin appears as available, installs with the manifest
 version, removes cleanly, and the final marketplace list no longer includes
-`goal-shaper-local`. Start a new Codex thread after installing or reinstalling
-in a real user profile.
+`yohaku`. Start a new Codex thread after installing or reinstalling in a real
+user profile.
 
 When `CODEX_HOME` points under `/tmp`, Codex may warn that it is skipping PATH
 alias creation. That warning is expected for this smoke; the plugin lifecycle
@@ -135,6 +161,8 @@ passes when the JSON results show the marketplace and plugin states above.
 
 - The official public Plugin Directory flow is separate from repo-local
   marketplace testing.
+- `INSTALL.md`, `UPDATE.md`, and `UNINSTALL.md` are the canonical user lifecycle
+  docs. Keep this file focused on packaging and development validation.
 - This plugin intentionally does not bundle apps, MCP servers, hooks, commands,
   or external service credentials.
 - Goal Shaper must keep its hard boundary: shape the `/goal` package, then stop.

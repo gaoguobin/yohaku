@@ -1,6 +1,6 @@
 # Goal Shaper
 
-Goal Shaper turns rough Codex requests into best-practice Goal mode packages.
+Goal Shaper turns rough Codex requests into verifiable Goal mode packages.
 It helps decide whether Goal mode fits, asks only for missing details that
 change success or safety, drafts a copyable `/goal`, and stops.
 
@@ -20,4 +20,4 @@ change success or safety, drafts a copyable `/goal`, and stops.
 ## Starter Prompts
 
 - Shape this rough request into a Codex `/goal`.
-- Turn my task into a verified Goal mode package.
+- Turn my task into a verifiable Goal mode package.

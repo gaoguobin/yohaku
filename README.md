@@ -1,7 +1,7 @@
 # Goal Shaper
 
 Goal Shaper is a Codex skill and plugin package that turns rough requests into
-best-practice Codex Goal mode packages.
+verifiable Codex Goal mode packages.
 
 It helps Codex decide whether Goal mode is appropriate, asks for only the
 missing details that change success or safety, drafts a copyable `/goal`, and
@@ -41,25 +41,21 @@ The project-scope skill lives at:
 
 ## Use As A Plugin
 
-Goal Shaper is also packaged as a Codex plugin:
+Goal Shaper is also packaged as a Codex plugin in the `yohaku` marketplace:
 
 ```text
 plugins/goal-shaper/
 ```
 
-The repo marketplace lives at:
+Normal users should install with either the Codex App UI or the CLI. See
+[Install](INSTALL.md) for both paths.
 
-```text
-.agents/plugins/marketplace.json
-```
-
-Install testing writes to local Codex plugin configuration, so do it only when
-you are ready to test local plugin install behavior:
+Command-line install:
 
 ```bash
-codex plugin marketplace add <repo-path> --json
-codex plugin list --marketplace goal-shaper-local --available --json
-codex plugin add goal-shaper@goal-shaper-local --json
+codex plugin marketplace add gaoguobin/goal-shaper --json
+codex plugin list --marketplace yohaku --available --json
+codex plugin add goal-shaper@yohaku --json
 ```
 
 Start a new Codex thread after installing or reinstalling the plugin.
@@ -89,8 +85,13 @@ python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" pl
 
 ## Documentation
 
+- [Install](INSTALL.md)
+- [Update](UPDATE.md)
+- [Uninstall](UNINSTALL.md)
 - [Validation](docs/validation.md)
+- [Scenario tests](docs/scenario-tests.md)
 - [Plugin packaging](docs/plugin.md)
+- [Release checklist](docs/release-checklist.md)
 
 ## License
 

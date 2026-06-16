@@ -1,13 +1,14 @@
 {
   "name": "goal-shaper",
-  "version": "0.1.1",
-  "description": "Shape fuzzy requests into best-practice Codex Goal mode packages.",
+  "version": "0.1.4",
+  "description": "Shape fuzzy requests into verifiable Codex Goal mode packages.",
   "author": {
     "name": "Gaoguobin",
     "url": "https://github.com/gaoguobin"
   },
   "homepage": "https://github.com/gaoguobin/goal-shaper",
   "repository": "https://github.com/gaoguobin/goal-shaper",
+  "license": "MIT",
   "keywords": [
     "codex",
     "goal-mode",
@@ -18,7 +19,7 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Goal Shaper",
-    "shortDescription": "Turn rough requests into verified Codex goals",
+    "shortDescription": "Turn rough requests into verifiable Codex goals",
     "longDescription": "Use Goal Shaper to decide whether a task belongs in Codex Goal mode, interview for missing outcome and verification details, and produce a copyable /goal package with evidence, assumptions, safety boundaries, and durable guidance candidates.",
     "developerName": "Gaoguobin",
     "category": "Developer Tools",
@@ -28,8 +29,13 @@
     ],
     "defaultPrompt": [
       "Shape this rough request into a Codex /goal.",
-      "Turn my task into a verified Goal mode package."
+      "Turn my task into a verifiable Goal mode package."
     ],
-    "brandColor": "#2563EB"
+    "websiteURL": "https://github.com/gaoguobin/goal-shaper",
+    "privacyPolicyURL": "https://github.com/gaoguobin/goal-shaper/blob/main/docs/privacy.md",
+    "termsOfServiceURL": "https://github.com/gaoguobin/goal-shaper/blob/main/docs/terms.md",
+    "brandColor": "#1F1B16",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
   }
 }

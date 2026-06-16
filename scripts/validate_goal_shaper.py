@@ -11,7 +11,7 @@ from __future__ import annotations
 import re
 import sys
 import json
-import filecmp
+import hashlib
 from pathlib import Path
 
 
@@ -22,6 +22,7 @@ PLUGIN_SKILL_DIR = PLUGIN_DIR / "skills" / "goal-shaper"
 SKILL_DIR = PROJECT_SKILL_DIR
 MARKETPLACE_PATH = ROOT / ".agents" / "plugins" / "marketplace.json"
 PLUGIN_MANIFEST_PATH = PLUGIN_DIR / ".codex-plugin" / "plugin.json"
+CHANGELOG_PATH = ROOT / "CHANGELOG.md"
 
 REQUIRED_FILES = [
     "SKILL.md",
@@ -31,6 +32,23 @@ REQUIRED_FILES = [
     "references/examples.md",
     "templates/goal-package.md",
     "templates/support-spec.md",
+]
+
+RELEASE_FILES = [
+    "README.md",
+    "INSTALL.md",
+    "UPDATE.md",
+    "UNINSTALL.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "LICENSE",
+    "docs/plugin.md",
+    "docs/privacy.md",
+    "docs/terms.md",
+    "docs/validation.md",
+    "docs/release-checklist.md",
+    "docs/scenario-tests.md",
 ]
 
 CANONICAL_FIELDS = [
@@ -86,6 +104,7 @@ PLUGIN_REQUIRED_FIELDS = [
     "version",
     "description",
     "author",
+    "license",
     "skills",
     "interface",
 ]
@@ -98,6 +117,11 @@ PLUGIN_INTERFACE_FIELDS = [
     "category",
     "capabilities",
     "defaultPrompt",
+    "websiteURL",
+    "privacyPolicyURL",
+    "termsOfServiceURL",
+    "composerIcon",
+    "logo",
 ]
 
 
@@ -149,7 +173,17 @@ def load_json(relative_path: Path, failures: list[str]) -> dict:
     if not isinstance(payload, dict):
         fail(failures, f"{relative_path.relative_to(ROOT)}: expected JSON object")
         return {}
+    if not payload:
+        fail(
+            failures,
+            f"{relative_path.relative_to(ROOT)}: expected non-empty JSON object",
+        )
+        return {}
     return payload
+
+
+def file_digest(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def validate_required_files(failures: list[str]) -> None:
@@ -166,6 +200,11 @@ def validate_required_files(failures: list[str]) -> None:
         if not path.is_file():
             fail(failures, f"missing required file: {path.relative_to(ROOT)}")
 
+    for relative in RELEASE_FILES:
+        path = ROOT / relative
+        if not path.is_file():
+            fail(failures, f"missing required release file: {relative}")
+
 
 def validate_plugin_skill_sync(failures: list[str]) -> None:
     if PROJECT_SKILL_DIR.is_symlink():
@@ -179,20 +218,26 @@ def validate_plugin_skill_sync(failures: list[str]) -> None:
         fail(failures, "plugins/goal-shaper/skills/goal-shaper must exist as the packaged skill")
         return
 
-    comparison = filecmp.dircmp(PROJECT_SKILL_DIR, PLUGIN_SKILL_DIR)
     mismatches: list[str] = []
+    project_files = {
+        path.relative_to(PROJECT_SKILL_DIR): path
+        for path in PROJECT_SKILL_DIR.rglob("*")
+        if path.is_file()
+    }
+    plugin_files = {
+        path.relative_to(PLUGIN_SKILL_DIR): path
+        for path in PLUGIN_SKILL_DIR.rglob("*")
+        if path.is_file()
+    }
 
-    def collect_diff(diff: filecmp.dircmp, prefix: Path) -> None:
-        for name in diff.left_only:
-            mismatches.append(f"project-only: {(prefix / name).as_posix()}")
-        for name in diff.right_only:
-            mismatches.append(f"plugin-only: {(prefix / name).as_posix()}")
-        for name in diff.diff_files:
-            mismatches.append(f"content differs: {(prefix / name).as_posix()}")
-        for name, subdiff in diff.subdirs.items():
-            collect_diff(subdiff, prefix / name)
+    for relative in sorted(project_files.keys() - plugin_files.keys()):
+        mismatches.append(f"project-only: {relative.as_posix()}")
+    for relative in sorted(plugin_files.keys() - project_files.keys()):
+        mismatches.append(f"plugin-only: {relative.as_posix()}")
+    for relative in sorted(project_files.keys() & plugin_files.keys()):
+        if file_digest(project_files[relative]) != file_digest(plugin_files[relative]):
+            mismatches.append(f"content differs: {relative.as_posix()}")
 
-    collect_diff(comparison, Path("."))
     if mismatches:
         fail(
             failures,
@@ -229,6 +274,7 @@ def validate_skill_entrypoint(failures: list[str]) -> None:
     description = frontmatter.get("description", "")
     for phrase in [
         "rough or fuzzy user requests",
+        "verifiable Codex Goal mode packages",
         "Codex Goal mode packages",
         "do not run the goal",
     ]:
@@ -252,6 +298,7 @@ def validate_skill_entrypoint(failures: list[str]) -> None:
         "modify repository ignore rules",
         "Do not treat this skill's own instructions or files as the user's target",
         "Do not invent exact validation commands",
+        "Separate prompt/package issues, model execution issues, and repo/tooling constraints",
         "Always separate one-time goal constraints from durable guidance",
         "Do not carry it forward from examples",
         "Present the final package and stop",
@@ -362,6 +409,8 @@ def validate_plugin_manifest(failures: list[str]) -> None:
         fail(failures, "plugin.json: `name` must be `goal-shaper`")
     if manifest.get("skills") != "./skills/":
         fail(failures, "plugin.json: `skills` must be `./skills/`")
+    if manifest.get("license") != "MIT":
+        fail(failures, "plugin.json: `license` must be `MIT`")
 
     version = manifest.get("version")
     if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?", version):
@@ -382,6 +431,25 @@ def validate_plugin_manifest(failures: list[str]) -> None:
     elif any(not isinstance(prompt, str) or not prompt.strip() or len(prompt) > 128 for prompt in prompts):
         fail(failures, "plugin.json: each default prompt must be a non-empty string <= 128 chars")
 
+    for field, expected in {
+        "websiteURL": "https://github.com/gaoguobin/goal-shaper",
+        "privacyPolicyURL": "https://github.com/gaoguobin/goal-shaper/blob/main/docs/privacy.md",
+        "termsOfServiceURL": "https://github.com/gaoguobin/goal-shaper/blob/main/docs/terms.md",
+        "brandColor": "#1F1B16",
+    }.items():
+        if interface.get(field) != expected:
+            fail(failures, f"plugin.json: `interface.{field}` must be `{expected}`")
+
+    for field, expected_path in {
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/icon.png",
+    }.items():
+        if interface.get(field) != expected_path:
+            fail(failures, f"plugin.json: `interface.{field}` must be `{expected_path}`")
+            continue
+        if not (PLUGIN_DIR / expected_path[2:]).is_file():
+            fail(failures, f"plugin.json: `interface.{field}` points to a missing file")
+
     unsupported = {"apps", "mcpServers", "hooks"} & set(manifest)
     if unsupported:
         fail(failures, f"plugin.json: unsupported or unnecessary fields present: {sorted(unsupported)}")
@@ -392,19 +460,28 @@ def validate_marketplace(failures: list[str]) -> None:
     if not marketplace:
         return
 
-    if marketplace.get("name") != "goal-shaper-local":
-        fail(failures, "marketplace.json: `name` must be `goal-shaper-local`")
+    if marketplace.get("name") != "yohaku":
+        fail(failures, "marketplace.json: `name` must be `yohaku`")
 
     interface = marketplace.get("interface")
-    if not isinstance(interface, dict) or interface.get("displayName") != "Goal Shaper Local":
-        fail(failures, "marketplace.json: `interface.displayName` must be `Goal Shaper Local`")
+    if not isinstance(interface, dict) or interface.get("displayName") != "Yohaku":
+        fail(failures, "marketplace.json: `interface.displayName` must be `Yohaku`")
 
-    plugins = marketplace.get("plugins")
-    if not isinstance(plugins, list) or len(plugins) != 1:
-        fail(failures, "marketplace.json: expected exactly one plugin entry")
+    plugin_entries = marketplace.get("plugins")
+    if not isinstance(plugin_entries, list):
+        fail(failures, "marketplace.json: `plugins` must be a list")
         return
 
-    entry = plugins[0]
+    matching_entries = [
+        entry
+        for entry in plugin_entries
+        if isinstance(entry, dict) and entry.get("name") == "goal-shaper"
+    ]
+    if len(matching_entries) != 1:
+        fail(failures, "marketplace.json: expected exactly one goal-shaper plugin entry")
+        return
+
+    entry = matching_entries[0]
     expected = {
         "name": "goal-shaper",
         "category": "Developer Tools",
@@ -427,6 +504,64 @@ def validate_marketplace(failures: list[str]) -> None:
         fail(failures, "marketplace.json: policy.authentication must be ON_INSTALL")
 
 
+def validate_release_metadata(failures: list[str]) -> None:
+    manifest = load_json(PLUGIN_MANIFEST_PATH, failures)
+    marketplace = load_json(MARKETPLACE_PATH, failures)
+    if not manifest or not marketplace:
+        return
+
+    version = manifest.get("version")
+    changelog = CHANGELOG_PATH.read_text(encoding="utf-8")
+    if isinstance(version, str) and f"## {version} -" not in changelog:
+        fail(failures, f"CHANGELOG.md: missing heading for plugin version {version}")
+
+    plugin_name = manifest.get("name")
+    marketplace_name = marketplace.get("name")
+    repository = manifest.get("repository", "")
+    repo_match = re.fullmatch(r"https://github\.com/([^/\s]+/[^/\s]+?)(?:\.git)?", repository)
+    if not repo_match:
+        fail(failures, "plugin.json: `repository` must be a GitHub repository URL")
+        return
+
+    repo_shorthand = repo_match.group(1)
+    plugin_selector = f"{plugin_name}@{marketplace_name}"
+    expected_commands = {
+        "INSTALL.md": [
+            f"codex plugin marketplace add {repo_shorthand} --json",
+            f"codex plugin list --marketplace {marketplace_name} --available --json",
+            f"codex plugin add {plugin_selector} --json",
+        ],
+        "README.md": [
+            f"codex plugin marketplace add {repo_shorthand} --json",
+            f"codex plugin add {plugin_selector} --json",
+        ],
+        "UPDATE.md": [
+            f"codex plugin marketplace upgrade {marketplace_name} --json",
+            f"codex plugin add {plugin_selector} --json",
+        ],
+        "UNINSTALL.md": [
+            f"codex plugin remove {plugin_selector} --json",
+            f"codex plugin marketplace remove {marketplace_name} --json",
+        ],
+        "docs/plugin.md": [
+            f"codex plugin marketplace add {repo_shorthand} --json",
+            f"codex plugin add {plugin_selector} --json",
+            f"codex plugin remove {plugin_selector} --json",
+        ],
+    }
+    for relative, commands in expected_commands.items():
+        text = (ROOT / relative).read_text(encoding="utf-8")
+        for command in commands:
+            require_contains(failures, text, command, relative, "lifecycle command")
+
+    stale_markers = ["goal-shaper-local", "codex plugin install"]
+    for relative in ["README.md", "INSTALL.md", "UPDATE.md", "UNINSTALL.md", "docs/plugin.md"]:
+        text = (ROOT / relative).read_text(encoding="utf-8")
+        for marker in stale_markers:
+            if marker in text:
+                fail(failures, f"{relative}: stale lifecycle marker `{marker}` must not appear")
+
+
 def main() -> int:
     failures: list[str] = []
     validate_required_files(failures)
@@ -445,6 +580,7 @@ def main() -> int:
     validate_agent_metadata(failures)
     validate_plugin_manifest(failures)
     validate_marketplace(failures)
+    validate_release_metadata(failures)
 
     if failures:
         print(f"goal-shaper validation failed: {len(failures)} issue(s)")

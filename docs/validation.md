@@ -28,6 +28,8 @@ The repository validator checks the current package state:
 - `.agents/plugins/marketplace.json` points at `./plugins/goal-shaper`.
 - `plugins/goal-shaper/.codex-plugin/plugin.json` keeps installable plugin
   metadata and does not claim unused apps, MCP servers, or hooks.
+- Release docs exist, lifecycle commands match the current repository,
+  marketplace, and plugin IDs, and `CHANGELOG.md` includes the manifest version.
 - The package keeps a small progressive-disclosure shape.
 - Validation-command invention, automatic goal execution, automatic support spec
   writes, and durable-guidance mixing remain guarded.
@@ -55,13 +57,6 @@ python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" pl
 
 ## Manual Scenario Checklist
 
-Use these prompts after meaningful behavior changes:
-
-- Too small: explain an unspecified function.
-- Too broad: modernize tests, UI, deployment, and docs together.
-- Performance: make a homepage faster without a target metric.
-- High risk: clean production logs or reclaim disk space.
-- Research: decide whether a dependency upgrade is appropriate.
-- Durable guidance: require a package manager and dependency policy, then check
-  unrelated prompts do not inherit that policy.
-- Long context: generate a compact `/goal` that points to a support spec.
+Use [scenario-tests.md](scenario-tests.md) after meaningful behavior changes and
+before public releases. It covers install, first use, interview behavior, goal
+quality, update, uninstall, and failure recovery.
