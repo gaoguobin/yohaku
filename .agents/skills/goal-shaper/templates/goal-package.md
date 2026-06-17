@@ -15,6 +15,8 @@ English unless the user explicitly asks otherwise.
 ```text
 /goal <English goal under 4,000 characters>
 ```
+<User-language note: Copy only the `/goal` code block to run it. The sections
+below are for review before running it.>
 
 **Evidence Checklist**
 - <Evidence that should prove completion>
@@ -47,6 +49,9 @@ This request is not a good fit for Goal mode: <reason>.
 ## Constraints
 
 - Keep the `/goal` command copyable.
+- Make clear that users should copy only the `/goal` code block to run it.
+- Do not leave execution-critical constraints only in the review sections below
+  the `/goal`.
 - Keep user-facing explanation concise.
 - Do not add implementation steps beyond what is needed for the goal contract.
 - Do not tell the user the goal has been run.

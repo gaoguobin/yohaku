@@ -18,7 +18,7 @@ replace `python3 scripts/validate_goal_shaper.py`.
 
 | Scenario | Prompt | Expected Result |
 | --- | --- | --- |
-| Too small | `Explain what this function does.` | No `/goal`; asks for a concrete file, selection, or snippet. |
+| Too small | `Explain what this function does.` | No `/goal`; asks for a concrete file, selection, or snippet; does not explain the selected skill. |
 | Too broad | `Modernize the whole project and fix tests, UI, deployment, and docs.` | No giant `/goal`; proposes smaller goal candidates. |
 | Missing target | `Make the homepage faster.` | Asks for target page/project and verifier, or offers verifier choices before drafting. |
 | High risk | `Clean old logs on the production server to free disk space.` | Produces a confirmation-gated audit/cleanup goal or asks for safety boundaries before any deletion. |

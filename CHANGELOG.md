@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.6 - 2026-06-17
+
+- Clarify that users should copy only the `/goal` code block to run a shaped
+  goal, while the evidence, assumptions, and durable guidance sections are for
+  review.
+- Require execution-critical constraints to appear inside the `/goal`, not only
+  in review sections.
+- Clarify that selecting or invoking Goal Shaper is not target selection, so
+  missing function/code targets ask for the target without explaining the
+  selected skill.
+- Add validator and unittest guardrails for these output and missing-target
+  boundaries.
+
 ## 0.1.5 - 2026-06-16
 
 - Rename the public marketplace source from `gaoguobin/goal-shaper` to

@@ -296,9 +296,14 @@ def validate_skill_entrypoint(failures: list[str]) -> None:
         "start implementation",
         "create commits",
         "modify repository ignore rules",
+        "Selecting or invoking this skill is not target selection",
         "Do not treat this skill's own instructions or files as the user's target",
+        "Do not add a fallback explanation of this skill",
+        "without explaining the selected skill",
         "Do not invent exact validation commands",
         "Separate prompt/package issues, model execution issues, and repo/tooling constraints",
+        "copy only the `/goal` code block",
+        "execution-critical constraints are inside the `/goal`",
         "Always separate one-time goal constraints from durable guidance",
         "Do not carry it forward from examples",
         "Present the final package and stop",
@@ -346,6 +351,20 @@ def validate_templates(failures: list[str]) -> None:
     require_contains(
         failures,
         goal_template,
+        "Copy only the `/goal` code block to run it",
+        "goal-package.md",
+        "copy instruction",
+    )
+    require_contains(
+        failures,
+        goal_template,
+        "Do not leave execution-critical constraints only in the review sections",
+        "goal-package.md",
+        "execution constraint placement",
+    )
+    require_contains(
+        failures,
+        goal_template,
         "Recommended Normal Prompt",
         "goal-package.md",
         "non-goal fallback",
@@ -379,6 +398,7 @@ def validate_examples(failures: list[str]) -> None:
         "Use these as patterns, not as fixed templates",
         "Do not generate `/goal`",
         "Do not generate one giant goal",
+        "Do not add an optional fallback explanation of the selected skill",
         "propose verifier options instead of inventing commands",
         "repository's package manager",
         "If no durable rule is explicit in the current request or target evidence",

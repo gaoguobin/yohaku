@@ -130,6 +130,35 @@ class ValidatorIntegrationTests(unittest.TestCase):
         self.assertIn("SKILL.md: missing 'core boundary'", output)
         self.assertIn("Do not invent exact validation commands", output)
 
+    def test_goal_template_requires_copy_instruction(self) -> None:
+        with copied_repo_fixture() as root:
+            replace_in_skill_copies(
+                root,
+                "templates/goal-package.md",
+                "Copy only the `/goal` code block to run it",
+                "Copy the generated goal",
+            )
+
+            status, output = run_validator(root)
+
+        self.assertEqual(status, 1, output)
+        self.assertIn("goal-package.md: missing 'copy instruction'", output)
+
+    def test_entrypoint_requires_missing_target_skill_boundary(self) -> None:
+        with copied_repo_fixture() as root:
+            replace_in_skill_copies(
+                root,
+                "SKILL.md",
+                "Selecting or invoking this skill is not target selection",
+                "Selecting this skill provides context",
+            )
+
+            status, output = run_validator(root)
+
+        self.assertEqual(status, 1, output)
+        self.assertIn("SKILL.md: missing 'core boundary'", output)
+        self.assertIn("not target selection", output)
+
     def test_project_and_packaged_skill_drift_fails(self) -> None:
         with copied_repo_fixture() as root:
             plugin_skill = (

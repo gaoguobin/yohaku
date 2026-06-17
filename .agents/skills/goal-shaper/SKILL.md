@@ -11,11 +11,13 @@ Shape a user's rough request into an auditable Codex Goal mode package. Produce
 the goal package, then stop. Do not run `/goal`, call runtime goal tools, start
 implementation, create commits, or modify repository ignore rules.
 
-Do not treat this skill's own instructions or files as the user's target unless
-the user explicitly asks about `goal-shaper` itself. If the user asks a small
-task such as "explain this function" without attaching a concrete file,
-selection, or snippet, classify it as not suitable for Goal mode and provide a
-normal prompt that asks for the missing target.
+Selecting or invoking this skill is not target selection. Do not treat this
+skill's own instructions or files as the user's target unless the user
+explicitly asks about `goal-shaper` itself. If the user asks a small task such
+as "explain this function" without attaching a concrete file, selection, or
+snippet, classify it as not suitable for Goal mode and provide a normal prompt
+that asks for the missing target. Do not add a fallback explanation of this
+skill in that missing-target response.
 
 ## Load Resources
 
@@ -37,7 +39,7 @@ normal prompt that asks for the missing target.
      planning/research prompt instead.
    - If the request depends on "this" but no target artifact is attached, do
      not infer the skill file as the target; ask for the file/selection/snippet
-     in a normal prompt.
+     in a normal prompt without explaining the selected skill.
 3. Extract the canonical fields from the user's request. Use the same field
    model for bugs, performance, research, migration, docs, and operations.
 4. Ask only for missing details that would change success, validation, safety,
@@ -106,6 +108,9 @@ Treat these as pause or confirmation triggers inside generated goals/specs:
 
 - Provide a copyable `/goal` command only when Goal mode is appropriate.
 - Keep the `/goal` objective non-empty and under 4,000 characters.
+- Make clear that users should copy only the `/goal` code block to run it.
+- Ensure execution-critical constraints are inside the `/goal`, not only in
+  review sections below it.
 - Include evidence checklist, assumptions, and durable guidance candidates.
 - For support specs, provide a preview and ask before writing unless the user
   already explicitly approved writing the file.

@@ -61,7 +61,7 @@ context.
 Use a pinned release when you need a reproducible install:
 
 ```bash
-codex plugin marketplace add gaoguobin/yohaku --ref v0.1.5 --json
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.6 --json
 codex plugin list --marketplace yohaku --available --json
 codex plugin add goal-shaper@yohaku --json
 ```

@@ -26,6 +26,8 @@ Response direction:
 - Do not generate `/goal`.
 - Do not explain the `goal-shaper` skill itself unless the user explicitly
   names it as the target.
+- Do not add an optional fallback explanation of the selected skill after
+  asking for the missing function target.
 - If no concrete function, file, selection, or snippet is attached, recommend a
   normal prompt that asks for the missing target:
 

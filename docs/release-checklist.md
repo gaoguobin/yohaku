@@ -48,5 +48,5 @@ Before calling a release public-ready, verify both user installation paths:
 - Pinned command line works from a clean profile or isolated `CODEX_HOME`:
 
 ```bash
-codex plugin marketplace add gaoguobin/yohaku --ref v0.1.5
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.6
 ```
