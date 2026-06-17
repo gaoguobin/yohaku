@@ -44,11 +44,14 @@ Before calling a release public-ready, verify both user types:
   Codex App before checking the directory. When testing an update, record
   whether the App provides a direct update/reinstall action or whether the UI
   fallback was required.
+- Localized UI guides: English, Simplified Chinese, and Japanese walkthroughs
+  render on GitHub, screenshots load, and screenshots do not expose accounts,
+  hostnames, local paths, tokens, or private project names.
 - Command line: `codex plugin marketplace add gaoguobin/yohaku`,
   `codex plugin add goal-shaper@yohaku`, and uninstall all work from a clean
   profile or isolated `CODEX_HOME`.
 - Pinned command line works from a clean profile or isolated `CODEX_HOME`:
 
 ```bash
-codex plugin marketplace add gaoguobin/yohaku --ref v0.1.6
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.7
 ```

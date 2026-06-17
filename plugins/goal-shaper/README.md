@@ -19,5 +19,5 @@ change success or safety, drafts a copyable `/goal`, and stops.
 
 ## Starter Prompts
 
-- Shape this rough request into a Codex `/goal`.
-- Turn my task into a verifiable Goal mode package.
+- Shape my rough task into a safe Codex `/goal`.
+- Turn my request into a verifiable Goal mode package.

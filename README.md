@@ -62,6 +62,12 @@ In the Codex App, start a new thread after installing. Type `/` to search
 enabled skills, `@` to choose an installed plugin or bundled capability, or `$`
 to mention a known skill directly, such as `$goal-shaper`.
 
+For UI walkthroughs with screenshots, see:
+
+- [UI guide](docs/ui-guide.en.md)
+- [UI 使用指南](docs/ui-guide.zh-CN.md)
+- [UI ガイド](docs/ui-guide.ja-JP.md)
+
 Command-line install uses `<plugin-name>@yohaku`:
 
 ```bash
@@ -108,6 +114,9 @@ python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" pl
 - [Install](INSTALL.md)
 - [Update](UPDATE.md)
 - [Uninstall](UNINSTALL.md)
+- [UI guide](docs/ui-guide.en.md)
+- [UI 使用指南](docs/ui-guide.zh-CN.md)
+- [UI ガイド](docs/ui-guide.ja-JP.md)
 - [Validation](docs/validation.md)
 - [Scenario tests](docs/scenario-tests.md)
 - [Plugin packaging](docs/plugin.md)

@@ -82,12 +82,12 @@ plugin:
 
 ```bash
 codex plugin marketplace remove yohaku --json
-codex plugin marketplace add gaoguobin/yohaku --ref v0.1.6 --json
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.7 --json
 codex plugin add goal-shaper@yohaku --json
 codex plugin list --marketplace yohaku --json
 ```
 
-Replace `v0.1.6` with the release tag you want to run.
+Replace `v0.1.7` with the release tag you want to run.
 
 ## Local Development
 

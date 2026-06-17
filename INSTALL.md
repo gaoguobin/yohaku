@@ -19,6 +19,13 @@ If the GitHub repository is not public yet, use the local development flow in
 
 Use this path if you prefer to manage plugins from the Codex App.
 
+Screenshot walkthroughs are available in English, Simplified Chinese, and
+Japanese:
+
+- [UI guide](docs/ui-guide.en.md)
+- [UI 使用指南](docs/ui-guide.zh-CN.md)
+- [UI ガイド](docs/ui-guide.ja-JP.md)
+
 ### Add The Marketplace
 
 1. Open Codex App.
@@ -105,12 +112,12 @@ context.
 Use a pinned release when you need a reproducible install:
 
 ```bash
-codex plugin marketplace add gaoguobin/yohaku --ref v0.1.6 --json
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.7 --json
 codex plugin list --marketplace yohaku --available --json
 codex plugin add goal-shaper@yohaku --json
 ```
 
-Replace `v0.1.6` with the release tag you want to run. Open a new Codex thread
+Replace `v0.1.7` with the release tag you want to run. Open a new Codex thread
 after installation so the bundled skills are loaded into fresh context.
 
 ### Verify From The CLI

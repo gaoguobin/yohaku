@@ -1,6 +1,6 @@
 {
   "name": "goal-shaper",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Shape fuzzy requests into verifiable Codex Goal mode packages.",
   "author": {
     "name": "Gaoguobin",
@@ -28,8 +28,8 @@
       "Read"
     ],
     "defaultPrompt": [
-      "Shape this rough request into a Codex /goal.",
-      "Turn my task into a verifiable Goal mode package."
+      "Shape my rough task into a safe Codex /goal.",
+      "Turn my request into a verifiable Goal mode package."
     ],
     "websiteURL": "https://github.com/gaoguobin/yohaku",
     "privacyPolicyURL": "https://github.com/gaoguobin/yohaku/blob/main/docs/privacy.md",

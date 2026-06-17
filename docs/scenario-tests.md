@@ -17,6 +17,7 @@ output contract; they do not replace `python3 scripts/validate_goal_shaper.py`.
 | UI update fallback | If no update action is shown and the version stays stale, uninstall Goal Shaper, remove and re-add `Yohaku` if needed, reinstall Goal Shaper, then start a new thread. | The plugin updates to the newer version. If removing `Yohaku`, any other Yohaku plugins are expected to need reinstalling. |
 | UI plugin uninstall | Uninstall Goal Shaper from the App plugin details page. | A new thread no longer shows the plugin-installed Goal Shaper entry. |
 | UI marketplace removal | Remove `Yohaku` only after uninstalling or no longer needing every plugin from that marketplace. | Yohaku no longer appears as a marketplace source, and no installed Yohaku plugins are expected to remain available. |
+| UI localized guides | Review `docs/ui-guide.en.md`, `docs/ui-guide.zh-CN.md`, and `docs/ui-guide.ja-JP.md` after screenshot or lifecycle changes. | The three guides describe the same UI lifecycle, link to existing screenshots, and do not contradict the canonical lifecycle docs. |
 
 ## CLI User Lifecycle
 

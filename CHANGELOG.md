@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.7 - 2026-06-17
+
+- Add English, Simplified Chinese, and Japanese Codex App UI guides with real
+  marketplace, plugin detail, and composer entrypoint screenshots.
+- Clarify the UI guide distinction between `/`, `@`, and `$` entrypoints for
+  installed Yohaku plugins and bundled skills.
+- Update Goal Shaper starter prompts to sound like realistic user actions
+  rather than abstract product copy.
+
 ## 0.1.6 - 2026-06-17
 
 - Clarify that users should copy only the `/goal` code block to run a shaped
