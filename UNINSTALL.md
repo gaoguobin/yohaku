@@ -1,14 +1,30 @@
 # Uninstall
 
-## Codex App UI
+Yohaku can contain multiple plugins. Remove the plugin first; remove the
+marketplace only when you no longer use any plugins from Yohaku.
+
+## UI Users
 
 1. Open Codex App.
 2. Open **Plugins**.
-3. Select **Goal Shaper** from the installed plugins list.
+3. Open the installed plugin you want to remove.
 4. Select **Uninstall plugin**.
 5. Start a new Codex thread so old thread context is not reused.
 
-## Command Line
+For Goal Shaper, open **Goal Shaper** from the installed plugins list.
+
+Only remove the `Yohaku` marketplace if you no longer need any plugin from it.
+Removing the marketplace affects every plugin installed from that marketplace.
+
+## CLI Users
+
+Remove one plugin:
+
+```bash
+codex plugin remove <plugin-name>@yohaku --json
+```
+
+For Goal Shaper:
 
 ```bash
 codex plugin remove goal-shaper@yohaku --json

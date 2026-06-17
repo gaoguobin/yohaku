@@ -33,15 +33,17 @@ that changes skill behavior, install metadata, or lifecycle docs.
 
 ## Lifecycle Smoke
 
-Run the isolated lifecycle smoke from `docs/plugin.md`, then test a real Codex
-App install/update/uninstall flow in a new thread.
+Run the isolated lifecycle smoke from `docs/plugin.md`, then test real Codex
+App and CLI lifecycle flows in new threads.
 
-Before calling a release public-ready, verify both user installation paths:
+Before calling a release public-ready, verify both user types:
 
-- Codex App UI: `Yohaku` or the shared Goal Shaper entry is visible, Goal Shaper
-  installs from the details page, and a new thread can select the skill. If the
-  marketplace was added on the same machine, restart Codex App before checking
-  the directory.
+- UI users: `Yohaku` or the shared Goal Shaper entry is visible, Goal Shaper
+  installs from the details page, and a new thread can select the skill via
+  `/`, `@`, or `$`. If the marketplace was added on the same machine, restart
+  Codex App before checking the directory. When testing an update, record
+  whether the App provides a direct update/reinstall action or whether the UI
+  fallback was required.
 - Command line: `codex plugin marketplace add gaoguobin/yohaku`,
   `codex plugin add goal-shaper@yohaku`, and uninstall all work from a clean
   profile or isolated `CODEX_HOME`.

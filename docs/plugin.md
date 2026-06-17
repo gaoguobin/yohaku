@@ -53,25 +53,30 @@ If the system `skill-creator` skill is available, validate the packaged skill:
 python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/goal-shaper/skills/goal-shaper
 ```
 
-## User Install
+## User Lifecycle
 
-The user-facing installation paths are documented in `INSTALL.md`.
+The user-facing lifecycle paths are documented in `INSTALL.md`, `UPDATE.md`,
+and `UNINSTALL.md`. Keep those files focused on two user types: UI users and
+CLI users. Keep this file focused on packaging and development validation.
 
-- Codex App UI: when `Yohaku` is already visible in the plugin directory, open
-  **Plugins**, select `Yohaku` or **Shared with you**, open **Goal Shaper**, then
-  select **Add to Codex**.
-- Command line:
+The CLI lifecycle is marketplace-first and plugin-second:
 
 ```bash
 codex plugin marketplace add gaoguobin/yohaku --json
 codex plugin list --marketplace yohaku --available --json
+codex plugin add <plugin-name>@yohaku --json
+```
+
+For Goal Shaper, use `goal-shaper@yohaku`:
+
+```bash
 codex plugin add goal-shaper@yohaku --json
 ```
 
-Start a new Codex thread after installation so the plugin and bundled skill are
-loaded into the fresh thread context.
-Restart Codex App or reopen Codex CLI after adding or refreshing a marketplace
-so the plugin directory reloads it.
+Start a new Codex thread after installing or reinstalling a plugin so the
+plugin and bundled skills are loaded into the fresh thread context. Restart
+Codex App or reopen Codex CLI after adding or refreshing a marketplace so the
+plugin directory reloads it.
 
 ## Local Development Install
 
@@ -90,9 +95,17 @@ loaded into the fresh thread context.
 Restart Codex App or reopen Codex CLI after adding or refreshing a marketplace
 so the plugin directory reloads it.
 
-## Update
+## Published Update
 
-For published releases, refresh the Git marketplace snapshot and reinstall:
+For published releases, refresh the Git marketplace snapshot and reinstall the
+target plugin:
+
+```bash
+codex plugin marketplace upgrade yohaku --json
+codex plugin add <plugin-name>@yohaku --json
+```
+
+For Goal Shaper:
 
 ```bash
 codex plugin marketplace upgrade yohaku --json
@@ -109,7 +122,7 @@ For another Git-backed marketplace, refresh that marketplace before reinstalling
 
 ```bash
 codex plugin marketplace upgrade <marketplace-name> --json
-codex plugin add goal-shaper@<marketplace-name> --json
+codex plugin add <plugin-name>@<marketplace-name> --json
 ```
 
 For local iteration without a semantic release, use the `plugin-creator`
@@ -124,12 +137,24 @@ Open a new thread after reinstalling.
 
 ## Uninstall
 
+Remove one plugin:
+
 ```bash
-codex plugin remove goal-shaper@yohaku --json
-codex plugin marketplace remove yohaku --json
+codex plugin remove <plugin-name>@yohaku --json
 ```
 
-Only remove the marketplace if it was added only for Goal Shaper local testing.
+For Goal Shaper:
+
+```bash
+codex plugin remove goal-shaper@yohaku --json
+```
+
+Only remove the marketplace if it was added only for local testing or if no
+other Yohaku plugins are needed:
+
+```bash
+codex plugin marketplace remove yohaku --json
+```
 
 ## Lifecycle Smoke
 

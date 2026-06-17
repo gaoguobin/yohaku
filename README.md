@@ -11,8 +11,8 @@ marketplace source:
 gaoguobin/yohaku
 ```
 
-After Codex loads the marketplace, it appears as `Yohaku`, and the installable
-plugin appears as `Goal Shaper`.
+After Codex loads the marketplace, it appears as `Yohaku`. Goal Shaper is the
+first installable plugin in that marketplace.
 
 ## What It Does
 
@@ -46,7 +46,7 @@ The project-scope skill lives at:
 .agents/skills/goal-shaper/
 ```
 
-## Use As A Plugin
+## Use As A Marketplace Plugin
 
 Goal Shaper is packaged as a Codex plugin in the `yohaku` marketplace:
 
@@ -54,10 +54,23 @@ Goal Shaper is packaged as a Codex plugin in the `yohaku` marketplace:
 plugins/goal-shaper/
 ```
 
-Normal users should install with either the Codex App UI or the CLI. See
-[Install](INSTALL.md) for both paths.
+Normal users should install and manage Yohaku plugins with either the Codex App
+UI or the CLI. See [Install](INSTALL.md), [Update](UPDATE.md), and
+[Uninstall](UNINSTALL.md) for the full lifecycle.
 
-Command-line install:
+In the Codex App, start a new thread after installing. Type `/` to search
+enabled skills, `@` to choose an installed plugin or bundled capability, or `$`
+to mention a known skill directly, such as `$goal-shaper`.
+
+Command-line install uses `<plugin-name>@yohaku`:
+
+```bash
+codex plugin marketplace add gaoguobin/yohaku --json
+codex plugin list --marketplace yohaku --available --json
+codex plugin add <plugin-name>@yohaku --json
+```
+
+For Goal Shaper:
 
 ```bash
 codex plugin marketplace add gaoguobin/yohaku --json
