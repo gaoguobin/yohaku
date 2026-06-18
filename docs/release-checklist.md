@@ -41,9 +41,9 @@ Before calling a release public-ready, verify both user types:
 - UI users: `Yohaku` or the shared Goal Shaper entry is visible, Goal Shaper
   installs from the details page, and a new thread can select the skill via
   `/`, `@`, or `$`. If the marketplace was added on the same machine, restart
-  Codex App before checking the directory. When testing an update, record
-  whether the App provides a direct update/reinstall action or whether the UI
-  fallback was required.
+  Codex App before checking the directory. When testing an update, restart the
+  App, check the details page version, and use the CLI update flow if the App
+  still shows the older version.
 - Localized UI guides: English, Simplified Chinese, and Japanese walkthroughs
   render on GitHub, screenshots load, and screenshots do not expose accounts,
   hostnames, local paths, tokens, or private project names.
@@ -53,5 +53,5 @@ Before calling a release public-ready, verify both user types:
 - Pinned command line works from a clean profile or isolated `CODEX_HOME`:
 
 ```bash
-codex plugin marketplace add gaoguobin/yohaku --ref v0.1.7
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.8
 ```

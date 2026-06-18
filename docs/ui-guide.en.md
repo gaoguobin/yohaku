@@ -56,14 +56,8 @@ Type `$goal-shaper` when you want the most precise skill invocation.
 
 ## Update
 
-If Codex App shows an update or reinstall action on the plugin details page,
-use it and then start a new thread.
-
-If the page still shows an older version and no update action appears, uninstall
-Goal Shaper, remove and re-add the `Yohaku` marketplace if needed, reinstall
-Goal Shaper, restart Codex App, and start a new thread.
-
-Removing the marketplace affects every plugin installed from Yohaku.
+Restart Codex App, open the plugin details page, and confirm the version. If
+the version is still old, use the CLI update flow in `UPDATE.md`.
 
 ## Uninstall
 

@@ -385,6 +385,20 @@ def validate_templates(failures: list[str]) -> None:
         "support-spec.md",
         "write confirmation",
     )
+    require_contains(
+        failures,
+        support_template,
+        "Before the support spec file exists, do not include a copyable `/goal` block",
+        "support-spec.md",
+        "unwritten spec guard",
+    )
+    require_contains(
+        failures,
+        support_template,
+        "After the support spec has been written, provide the final runnable goal",
+        "support-spec.md",
+        "post-write runnable goal",
+    )
     for section in SUPPORT_SPEC_SECTIONS:
         require_contains(failures, support_template, f"## {section}", "support-spec.md", "spec section")
 

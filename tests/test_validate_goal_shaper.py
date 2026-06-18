@@ -144,6 +144,20 @@ class ValidatorIntegrationTests(unittest.TestCase):
         self.assertEqual(status, 1, output)
         self.assertIn("goal-package.md: missing 'copy instruction'", output)
 
+    def test_support_spec_template_blocks_unwritten_spec_goal(self) -> None:
+        with copied_repo_fixture() as root:
+            replace_in_skill_copies(
+                root,
+                "templates/support-spec.md",
+                "Before the support spec file exists, do not include a copyable `/goal` block",
+                "Preview the runnable goal before writing the support spec",
+            )
+
+            status, output = run_validator(root)
+
+        self.assertEqual(status, 1, output)
+        self.assertIn("support-spec.md: missing 'unwritten spec guard'", output)
+
     def test_entrypoint_requires_missing_target_skill_boundary(self) -> None:
         with copied_repo_fixture() as root:
             replace_in_skill_copies(

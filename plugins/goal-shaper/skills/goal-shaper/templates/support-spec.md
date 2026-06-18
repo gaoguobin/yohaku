@@ -10,6 +10,8 @@ Default path:
 ```
 
 Ask for confirmation before writing the file.
+Before the support spec file exists, do not include a copyable `/goal` block
+that references it.
 
 ## Goal Package Response Shape
 
@@ -24,16 +26,16 @@ recovery information.
 **Suggested Path**
 `.goal-shaper/specs/<date>-<slug>.md`
 
-**Runnable Goal**
-```text
-/goal Complete <outcome> according to .goal-shaper/specs/<date>-<slug>.md, verified by <evidence summary>, while preserving <constraints summary>. If blocked, stop with attempted paths, evidence gathered, blocker, and next input needed.
-```
-
 **Support Spec Preview**
 <Show the spec content or a concise preview, depending on length.>
 
+**Next Step**
 Ask in the user's language whether to write the support spec at the suggested
-path.
+path. After the support spec has been written, provide the final runnable goal:
+
+```text
+/goal Complete <outcome> according to .goal-shaper/specs/<date>-<slug>.md, verified by <evidence summary>, while preserving <constraints summary>. If blocked, stop with attempted paths, evidence gathered, blocker, and next input needed.
+```
 ````
 
 ## Support Spec File Shape

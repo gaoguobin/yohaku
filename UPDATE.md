@@ -1,43 +1,19 @@
 # Update
 
 Use this flow after a newer Yohaku marketplace version or plugin release is
-available. Yohaku can contain multiple plugins, so update the marketplace first,
-then update the specific plugin you use.
+available. Yohaku can contain multiple plugins, so confirm the marketplace and
+plugin version you intend to use.
 
 ## UI Users
 
-Codex App can install and uninstall plugins from the plugin directory. Current
-official docs do not confirm that the App UI can refresh a Git-backed
-marketplace snapshot by itself, so treat UI-only update as a best-effort flow
-until it is verified on a future release.
+Use the App to check the installed version after a restart. If the version is
+still old, use the CLI flow below.
 
-### If The App Shows An Update Or Reinstall Action
-
-1. Open Codex App.
+1. Restart Codex App.
 2. Open **Plugins**.
 3. Select the `Yohaku` marketplace.
-4. Open the plugin you want to update.
-5. Use the App's update or reinstall action if it is shown.
-6. Restart Codex App if the version does not refresh immediately.
-7. Start a new Codex thread.
-
-For Goal Shaper, confirm the details page shows the expected version.
-
-### UI-Only Fallback
-
-Use this when the App does not show an update action and the plugin details
-page still shows an older version.
-
-1. Open **Plugins** and uninstall the target plugin.
-2. If the version still stays stale, remove the `Yohaku` marketplace only if
-   you are ready to reinstall any other Yohaku plugins you use.
-3. Add the marketplace again with source `gaoguobin/yohaku`.
-4. Install the target plugin again.
-5. Restart Codex App.
-6. Start a new Codex thread.
-
-Removing the marketplace affects all plugins installed from that marketplace,
-not only Goal Shaper.
+4. Open the plugin details page and confirm the version.
+5. Start a new Codex thread.
 
 ## CLI Users
 
@@ -82,12 +58,12 @@ plugin:
 
 ```bash
 codex plugin marketplace remove yohaku --json
-codex plugin marketplace add gaoguobin/yohaku --ref v0.1.7 --json
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.8 --json
 codex plugin add goal-shaper@yohaku --json
 codex plugin list --marketplace yohaku --json
 ```
 
-Replace `v0.1.7` with the release tag you want to run.
+Replace `v0.1.8` with the release tag you want to run.
 
 ## Local Development
 

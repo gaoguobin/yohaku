@@ -112,12 +112,12 @@ context.
 Use a pinned release when you need a reproducible install:
 
 ```bash
-codex plugin marketplace add gaoguobin/yohaku --ref v0.1.7 --json
+codex plugin marketplace add gaoguobin/yohaku --ref v0.1.8 --json
 codex plugin list --marketplace yohaku --available --json
 codex plugin add goal-shaper@yohaku --json
 ```
 
-Replace `v0.1.7` with the release tag you want to run. Open a new Codex thread
+Replace `v0.1.8` with the release tag you want to run. Open a new Codex thread
 after installation so the bundled skills are loaded into fresh context.
 
 ### Verify From The CLI

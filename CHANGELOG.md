@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.8 - 2026-06-18
+
+- Guard large support-spec flows so Goal Shaper does not present a copyable
+  `/goal` that references an unwritten support spec file.
+- Make Codex App update guidance conservative: restart and check the plugin
+  details page, then use the CLI update flow if the version stays old.
+- Add regression coverage for the unwritten support-spec guard.
+
 ## 0.1.7 - 2026-06-17
 
 - Add English, Simplified Chinese, and Japanese Codex App UI guides with real
