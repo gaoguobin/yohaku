@@ -1,7 +1,7 @@
-# Goal Shaper Plugin Packaging
+# Yohaku Plugin Packaging
 
-Goal Shaper is packaged as a Codex plugin for public marketplace installation
-and local development testing.
+Yohaku packages focused Codex workflow plugins for public marketplace
+installation and local development testing.
 
 ## Package Layout
 
@@ -21,6 +21,13 @@ plugins/
         agents/openai.yaml
         references/
         templates/
+  seed/
+    .codex-plugin/plugin.json
+    assets/
+    skills/
+      seed/
+        SKILL.md
+        scripts/
 ```
 
 The project skill under `.agents/skills/goal-shaper` preserves the plain
@@ -28,13 +35,18 @@ The project skill under `.agents/skills/goal-shaper` preserves the plain
 `plugins/goal-shaper/skills/goal-shaper` is the plugin distribution copy.
 `python3 scripts/validate_goal_shaper.py` checks that both copies stay in sync.
 
+Seed is distributed only as a packaged Yohaku plugin in this repository. Its
+source skill currently comes from the Seed skill package and lives under
+`plugins/seed/skills/seed`.
+
 Do not replace the project skill with a symlink. In local testing, a symlink
 caused Codex to surface the skill as `goal-shaper:goal-shaper` instead of the
 plain `$goal-shaper` project skill.
 
 ## Validation
 
-Run the repository validator after changing the skill or plugin metadata:
+Run the repository validator after changing the skill, plugin metadata, or
+marketplace metadata:
 
 ```bash
 python3 scripts/validate_goal_shaper.py
@@ -45,12 +57,14 @@ manifest validator:
 
 ```bash
 python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/goal-shaper
+python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seed
 ```
 
 If the system `skill-creator` skill is available, validate the packaged skill:
 
 ```bash
 python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/goal-shaper/skills/goal-shaper
+python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/seed/skills/seed
 ```
 
 ## User Lifecycle
@@ -71,6 +85,12 @@ For Goal Shaper, use `goal-shaper@yohaku`:
 
 ```bash
 codex plugin add goal-shaper@yohaku --json
+```
+
+For Seed, use `seed@yohaku`:
+
+```bash
+codex plugin add seed@yohaku --json
 ```
 
 Start a new Codex thread after installing or reinstalling a plugin so the

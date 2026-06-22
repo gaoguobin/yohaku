@@ -1,0 +1,42 @@
+{
+  "name": "seed",
+  "version": "0.1.4",
+  "description": "Shape rough ideas into reviewed specs before implementation.",
+  "author": {
+    "name": "Gaoguobin",
+    "url": "https://github.com/gaoguobin"
+  },
+  "homepage": "https://github.com/gaoguobin/yohaku",
+  "repository": "https://github.com/gaoguobin/yohaku",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "skills",
+    "brainstorming",
+    "requirements",
+    "specs"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Seed",
+    "shortDescription": "Turn rough ideas into reviewed specs",
+    "longDescription": "Use Seed before implementation to clarify intent, compare approaches, write a reviewed spec, and stop before planning or coding starts.",
+    "developerName": "Gaoguobin",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Help me think through this idea before coding.",
+      "Turn this rough feature idea into a reviewed spec."
+    ],
+    "websiteURL": "https://github.com/gaoguobin/yohaku",
+    "privacyPolicyURL": "https://github.com/gaoguobin/yohaku/blob/main/docs/privacy.md",
+    "termsOfServiceURL": "https://github.com/gaoguobin/yohaku/blob/main/docs/terms.md",
+    "brandColor": "#2F4F3A",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
+  }
+}

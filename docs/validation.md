@@ -1,4 +1,4 @@
-# Goal Shaper Validation
+# Yohaku Validation
 
 Run the unit tests after changing the validator or its guardrail coverage:
 
@@ -6,7 +6,8 @@ Run the unit tests after changing the validator or its guardrail coverage:
 python3 -m unittest discover -s tests
 ```
 
-Run this after changing the `goal-shaper` skill package:
+Run this after changing the `goal-shaper` skill package, packaged plugins, or
+marketplace metadata:
 
 ```bash
 python3 scripts/validate_goal_shaper.py
@@ -25,7 +26,8 @@ The repository validator checks the current package state:
 - Plugin packaging exists under `plugins/goal-shaper/`.
 - `.agents/skills/goal-shaper` and
   `plugins/goal-shaper/skills/goal-shaper` stay byte-for-byte in sync.
-- `.agents/plugins/marketplace.json` points at `./plugins/goal-shaper`.
+- `.agents/plugins/marketplace.json` is the `yohaku` marketplace and every
+  listed plugin points to a real local plugin package.
 - `plugins/goal-shaper/.codex-plugin/plugin.json` keeps installable plugin
   metadata and does not claim unused apps, MCP servers, or hooks.
 - Release docs exist, lifecycle commands match the current repository,
@@ -52,7 +54,9 @@ When local system skills are available, run:
 
 ```bash
 python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/goal-shaper
+python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seed
 python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/goal-shaper/skills/goal-shaper
+python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/seed/skills/seed
 ```
 
 ## Manual Scenario Checklist

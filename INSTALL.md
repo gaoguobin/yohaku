@@ -1,7 +1,7 @@
 # Install
 
 Yohaku is a Codex plugin marketplace published by this repository. It can host
-multiple plugins over time. Goal Shaper is the first public plugin.
+multiple focused Codex workflow plugins.
 
 ## Prerequisites
 
@@ -44,7 +44,8 @@ If `Yohaku` is already visible in the plugin directory, skip this step.
 4. Select **Add to Codex**.
 5. Start a new Codex thread.
 
-For Goal Shaper, open **Goal Shaper** from the `Yohaku` marketplace.
+For Goal Shaper, open **Goal Shaper** from the `Yohaku` marketplace. For Seed,
+open **Seed**.
 
 ### Use A Plugin In Codex App
 
@@ -103,6 +104,14 @@ codex plugin list --marketplace yohaku --available --json
 codex plugin add goal-shaper@yohaku --json
 ```
 
+For Seed:
+
+```bash
+codex plugin marketplace add gaoguobin/yohaku --json
+codex plugin list --marketplace yohaku --available --json
+codex plugin add seed@yohaku --json
+```
+
 Restart Codex App or reopen Codex CLI after adding the marketplace. Open a new
 Codex thread after installation so the bundled skills are loaded into fresh
 context.
@@ -114,7 +123,7 @@ Use a pinned release when you need a reproducible install:
 ```bash
 codex plugin marketplace add gaoguobin/yohaku --ref v0.1.8 --json
 codex plugin list --marketplace yohaku --available --json
-codex plugin add goal-shaper@yohaku --json
+codex plugin add <plugin-name>@yohaku --json
 ```
 
 Replace `v0.1.8` with the release tag you want to run. Open a new Codex thread
@@ -126,6 +135,5 @@ after installation so the bundled skills are loaded into fresh context.
 codex plugin list --marketplace yohaku --json
 ```
 
-For Goal Shaper, the installed entry should show `goal-shaper@yohaku`,
-`installed: true`, and the version from
-`plugins/goal-shaper/.codex-plugin/plugin.json`.
+The selected plugin entry should show `<plugin-name>@yohaku`, `installed:
+true`, and the version from its `.codex-plugin/plugin.json`.

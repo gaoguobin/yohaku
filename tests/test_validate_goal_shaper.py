@@ -271,6 +271,11 @@ class ValidatorIntegrationTests(unittest.TestCase):
 
     def test_marketplace_allows_other_yohaku_plugins(self) -> None:
         with copied_repo_fixture() as root:
+            future_plugin = root / "plugins" / "future-plugin"
+            future_manifest = future_plugin / ".codex-plugin" / "plugin.json"
+            future_manifest.parent.mkdir(parents=True)
+            future_manifest.write_text('{"name": "future-plugin"}', encoding="utf-8")
+
             marketplace_path = root / ".agents" / "plugins" / "marketplace.json"
             marketplace = json.loads(marketplace_path.read_text(encoding="utf-8"))
             marketplace["plugins"].append(
@@ -292,6 +297,43 @@ class ValidatorIntegrationTests(unittest.TestCase):
             status, output = run_validator(root)
 
         self.assertEqual(status, 0, output)
+
+    def test_marketplace_rejects_missing_plugin_entry_path(self) -> None:
+        with copied_repo_fixture() as root:
+            marketplace_path = root / ".agents" / "plugins" / "marketplace.json"
+            marketplace = json.loads(marketplace_path.read_text(encoding="utf-8"))
+            marketplace["plugins"].append(
+                {
+                    "name": "missing-plugin",
+                    "source": {
+                        "source": "local",
+                        "path": "./plugins/missing-plugin",
+                    },
+                    "policy": {
+                        "installation": "AVAILABLE",
+                        "authentication": "ON_INSTALL",
+                    },
+                    "category": "Developer Tools",
+                }
+            )
+            marketplace_path.write_text(json.dumps(marketplace), encoding="utf-8")
+
+            status, output = run_validator(root)
+
+        self.assertEqual(status, 1, output)
+        self.assertIn("missing required file: plugins/missing-plugin/.codex-plugin/plugin.json", output)
+
+    def test_marketplace_rejects_non_kebab_plugin_name(self) -> None:
+        with copied_repo_fixture() as root:
+            marketplace_path = root / ".agents" / "plugins" / "marketplace.json"
+            marketplace = json.loads(marketplace_path.read_text(encoding="utf-8"))
+            marketplace["plugins"][0]["name"] = "../goal-shaper"
+            marketplace_path.write_text(json.dumps(marketplace), encoding="utf-8")
+
+            status, output = run_validator(root)
+
+        self.assertEqual(status, 1, output)
+        self.assertIn("name must be kebab-case", output)
 
     def test_marketplace_must_point_to_packaged_plugin(self) -> None:
         with copied_repo_fixture() as root:

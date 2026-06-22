@@ -1,10 +1,10 @@
 # Terms
 
-Goal Shaper is provided as-is under the repository license.
+Yohaku plugins are provided as-is under the repository license.
 
-The plugin drafts Goal mode packages for user review. Users remain responsible
-for reviewing generated goals, confirming safety boundaries, and deciding
-whether to run any resulting `/goal`.
+Users remain responsible for reviewing generated specs, goals, safety
+boundaries, and any resulting instructions before running them.
 
-Goal Shaper does not execute tasks, modify target projects, access production
-systems, or perform external writes by itself.
+Yohaku plugins do not execute tasks, modify target projects, access production
+systems, or perform external writes by themselves unless a specific future
+plugin explicitly documents and asks for that capability.

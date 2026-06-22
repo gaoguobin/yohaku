@@ -506,6 +506,9 @@ def validate_marketplace(failures: list[str]) -> None:
         fail(failures, "marketplace.json: `plugins` must be a list")
         return
 
+    for index, entry in enumerate(plugin_entries):
+        validate_marketplace_entry(failures, entry, index)
+
     matching_entries = [
         entry
         for entry in plugin_entries
@@ -536,6 +539,48 @@ def validate_marketplace(failures: list[str]) -> None:
         fail(failures, "marketplace.json: policy.installation must be AVAILABLE")
     if policy.get("authentication") != "ON_INSTALL":
         fail(failures, "marketplace.json: policy.authentication must be ON_INSTALL")
+
+
+def validate_marketplace_entry(failures: list[str], entry: object, index: int) -> None:
+    if not isinstance(entry, dict):
+        fail(failures, f"marketplace.json: plugin entry {index} must be an object")
+        return
+
+    name = entry.get("name")
+    if not isinstance(name, str) or not name.strip():
+        fail(failures, f"marketplace.json: plugin entry {index} must have a name")
+        return
+    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
+        fail(failures, f"marketplace.json: plugin `{name}` name must be kebab-case")
+        return
+
+    if entry.get("category") != "Developer Tools":
+        fail(failures, f"marketplace.json: plugin `{name}` category must be Developer Tools")
+
+    source = entry.get("source")
+    expected_path = f"./plugins/{name}"
+    if (
+        not isinstance(source, dict)
+        or source.get("source") != "local"
+        or source.get("path") != expected_path
+    ):
+        fail(failures, f"marketplace.json: source must point to {expected_path}")
+        return
+
+    plugin_root = ROOT / expected_path[2:]
+    manifest_path = plugin_root / ".codex-plugin" / "plugin.json"
+    manifest = load_json(manifest_path, failures)
+    if manifest and manifest.get("name") != name:
+        fail(failures, f"marketplace.json: plugin `{name}` manifest name must match entry")
+
+    policy = entry.get("policy")
+    if not isinstance(policy, dict):
+        fail(failures, f"marketplace.json: plugin `{name}` policy must be an object")
+        return
+    if policy.get("installation") != "AVAILABLE":
+        fail(failures, f"marketplace.json: plugin `{name}` policy.installation must be AVAILABLE")
+    if policy.get("authentication") != "ON_INSTALL":
+        fail(failures, f"marketplace.json: plugin `{name}` policy.authentication must be ON_INSTALL")
 
 
 def validate_release_metadata(failures: list[str]) -> None:

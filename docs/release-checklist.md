@@ -4,7 +4,8 @@ Use this checklist before tagging or sharing a public release.
 
 ## Metadata
 
-- `plugins/goal-shaper/.codex-plugin/plugin.json` has a clean semver version.
+- Every plugin under `plugins/` has a clean semver version in
+  `.codex-plugin/plugin.json`.
 - `CHANGELOG.md` includes the release version.
 - `README.md`, `INSTALL.md`, `UPDATE.md`, and `UNINSTALL.md` mention the current
   marketplace name.
@@ -23,8 +24,10 @@ curl -I -L https://github.com/gaoguobin/yohaku
 python3 -m unittest discover -s tests
 python3 scripts/validate_goal_shaper.py
 python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/goal-shaper
+python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seed
 python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" .agents/skills/goal-shaper
 python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/goal-shaper/skills/goal-shaper
+python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/seed/skills/seed
 git diff --check
 ```
 
@@ -38,8 +41,9 @@ App and CLI lifecycle flows in new threads.
 
 Before calling a release public-ready, verify both user types:
 
-- UI users: `Yohaku` or the shared Goal Shaper entry is visible, Goal Shaper
-  installs from the details page, and a new thread can select the skill via
+- UI users: `Yohaku` is visible, the expected plugins appear in the marketplace,
+  the target plugin installs from its details page, and a new thread can select
+  the target plugin or skill via
   `/`, `@`, or `$`. If the marketplace was added on the same machine, restart
   Codex App before checking the directory. When testing an update, restart the
   App, check the details page version, and use the CLI update flow if the App
@@ -48,7 +52,8 @@ Before calling a release public-ready, verify both user types:
   render on GitHub, screenshots load, and screenshots do not expose accounts,
   hostnames, local paths, tokens, or private project names.
 - Command line: `codex plugin marketplace add gaoguobin/yohaku`,
-  `codex plugin add goal-shaper@yohaku`, and uninstall all work from a clean
+  `codex plugin list --marketplace yohaku --available --json`,
+  `codex plugin add <plugin-name>@yohaku`, and uninstall all work from a clean
   profile or isolated `CODEX_HOME`.
 - Pinned command line works from a clean profile or isolated `CODEX_HOME`:
 

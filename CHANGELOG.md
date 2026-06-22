@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Add Seed as a second Yohaku marketplace plugin.
+- Validate marketplace entries as real local plugin packages instead of only
+  checking the Goal Shaper entry.
+- Update public docs to describe Yohaku as a multi-plugin marketplace.
+
 ## 0.1.8 - 2026-06-18
 
 - Guard large support-spec flows so Goal Shaper does not present a copyable
