@@ -6,6 +6,7 @@
 - Validate marketplace entries as real local plugin packages instead of only
   checking the Goal Shaper entry.
 - Update public docs to describe Yohaku as a multi-plugin marketplace.
+- Generalize localized UI guides for installing and invoking any Yohaku plugin.
 
 ## 0.1.8 - 2026-06-18
 
