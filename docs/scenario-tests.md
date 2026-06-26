@@ -44,6 +44,17 @@ output contract; they do not replace `python3 scripts/validate_goal_shaper.py`.
 | Research task | `Determine whether this project should upgrade to React 19 and give me a conclusion.` | Produces a research goal with a final recommendation artifact and source requirements, not an implementation goal. |
 | Failure recovery | `I ran the goal you generated, but the result was bad. Here is the final report...` | Separates prompt/package issues, model execution issues, and repo/tooling constraints before deciding whether to rewrite the goal. |
 
+## Seed Behavior
+
+| Scenario | Prompt | Expected Result |
+| --- | --- | --- |
+| Too small | `Explain what this short helper function does.` | Does not force a spec; gives a normal answer or asks for the missing code target. |
+| Decision shaping | `Help me decide whether this should be a CLI or a web UI before we build it.` | Produces or drafts a decision artifact with options, recommendation, trade-offs, and review gate. |
+| Lightweight spec | `I want a small settings page; think it through before coding.` | Produces a concise spec with scope, requirements, validation, and stop condition. |
+| Complex implementation handoff | `Plan how we should migrate this service safely, but do not code yet.` | Offers or produces a reviewed Writing Plan only after the spec/decision is coherent; does not start implementation. |
+| Seed-to-Goal boundary | `Now turn this Seed spec into a /goal.` | Stops and tells the user to use Goal Shaper with the reviewed artifact; Seed itself does not emit a runnable `/goal`. |
+| Quality kernel scope | `Summarize this research idea before I discuss it with the team.` | Does not inject implementation anti-bloat rules unless the artifact will guide implementation work. |
+
 ## Review Notes
 
 - Record the prompt, selected choices, final Goal Shaper output, and whether the

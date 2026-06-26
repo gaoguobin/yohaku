@@ -1,166 +1,157 @@
 ---
 name: seed
-description: "Use before implementation to brainstorm, clarify requirements, compare approaches, or turn a vague idea into a spec/PRD/design doc; trigger on think through, requirements analysis, solution design, write a spec, draft a PRD, before coding, no code yet, and Chinese prompts like 头脑风暴、讨论、聊聊、梳理想法、需求澄清/分析、方案设计/对比、技术方案、产品方案、写spec/PRD、先不实现、先别写代码; stop after the spec."
+description: "Use before implementation to brainstorm, clarify requirements, compare approaches, shape rough ideas into reviewed specs, PRDs, design docs, decision artifacts, or optional Writing Plans for complex implementation handoff; trigger on think through, requirements analysis, solution design, write a spec, draft a PRD, before coding, no code yet, and Chinese prompts like 头脑风暴、讨论、聊聊、梳理想法、需求澄清/分析、方案设计/对比、技术方案、产品方案、写spec/PRD、先不实现、先别写代码; stop after the reviewed artifact and do not code."
 ---
 
-# Seed Ideas Into Specs
+# Seed Ideas Into Reviewed Artifacts
 
-Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
-
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+Turn rough ideas into reviewed specs, decisions, or compact handoff plans before
+implementation. Seed owns the spec or decision artifact. Goal Shaper owns the
+later `/goal` package.
 
 <HARD-GATE>
-Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
+Do NOT invoke implementation skills, write implementation code, scaffold a
+project, call Goal Shaper, run `/goal`, or start implementation execution or
+automatic handoff. Stop after the reviewed artifact.
 </HARD-GATE>
 
-## Anti-Pattern: "This Is Too Simple To Need A Design"
+A Writing Plan is a handoff artifact, not an execution mode. It is approved
+context for a future handoff, not approval to begin that handoff automatically.
+Do not produce a Writing Plan before the spec or decision is coherent and the
+user wants an implementation handoff.
 
-Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+## Artifact Triage
+
+Choose the smallest artifact that makes the next decision reliable:
+
+- **Decision note**: when the user needs to choose between directions.
+- **Lightweight spec**: when the idea is simple but still needs scope and
+  success criteria.
+- **Full spec / PRD / design doc**: when the work affects product behavior,
+  architecture, users, data, integrations, or multiple files/modules.
+- **Writing Plan**: optional after the spec is understood, only for complex,
+  risky, cross-module, migration, performance, or operations work that needs a
+  handoff to implementation or Goal Shaper.
+
+If the request is too broad for one artifact, decompose it and shape only the
+first coherent sub-project. If it is a tiny explanation or one-answer question,
+do not force a spec; answer normally and say Seed is not needed.
 
 ## Checklist
 
-You MUST create a task for each of these items and complete them in order:
+Create and complete task items in this order:
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
-3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-4. **Propose 2-3 approaches** — with trade-offs and your recommendation
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/seed/YYYY-MM-DD-<topic>-design.md`
-7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **User reviews written spec** — ask user to review the spec file before proceeding
-9. **Deliver spec to user and STOP** — report the spec file path; do not invoke any other skill or start implementation
+1. **Explore context**: inspect available project files, docs, and constraints.
+2. **Triage artifact and scope**: choose decision note, lightweight spec, full
+   spec, or optional Writing Plan.
+3. **Offer Visual Companion if useful**: only when visual comparison would help;
+   use a separate message. See `visual-companion.md`.
+4. **Ask clarifying questions**: one at a time; prefer multiple choice when it
+   lowers friction.
+5. **Compare 2-3 approaches**: lead with the recommended path and trade-offs.
+6. **Present the artifact draft**: section by section when non-trivial, scaled
+   to complexity.
+7. **Self-review**: fix placeholders, contradictions, ambiguity, scope creep,
+   and unjustified complexity.
+8. **User review gate**: ask the user to review; revise if requested.
+9. **Deliver final artifact and STOP**: report the artifact path or final inline
+   artifact. Do not continue into implementation or Goal Shaper.
 
-## Process Flow
+## Interview Rules
 
-```dot
-digraph seed {
-    "Explore project context" [shape=box];
-    "Visual questions ahead?" [shape=diamond];
-    "Offer Visual Companion\n(own message, no other content)" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
-    "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
-    "Write design doc" [shape=box];
-    "Spec self-review\n(fix inline)" [shape=box];
-    "User reviews spec?" [shape=diamond];
-    "Deliver spec path to user and STOP" [shape=doublecircle];
+- Ask only one question per message.
+- Ask questions that change scope, success criteria, constraints, user value,
+  architecture, validation, risk, or handoff quality.
+- Avoid asking for details already clear from context.
+- For existing codebases, inspect current structure before proposing changes and
+  follow local patterns.
+- Do not propose unrelated refactors or speculative future features.
 
-    "Explore project context" -> "Visual questions ahead?";
-    "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
-    "Visual questions ahead?" -> "Ask clarifying questions" [label="no"];
-    "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Deliver spec path to user and STOP" [label="approved"];
-}
-```
+## Shared Quality Kernel
 
-**The terminal state is delivering the spec to the user. STOP.** Do NOT invoke any other skill, do NOT start implementation planning, and do NOT write implementation code. Report the spec path and end your turn; the user decides what happens next.
+Apply this kernel only when the artifact will guide implementation, maintenance,
+migration, performance, or operations work. Do not apply it to pure explanation,
+research summaries, or tiny one-answer tasks.
 
-## The Process
+- Prefer not building what does not need to exist.
+- Prefer standard library, platform-native features, existing project patterns,
+  and already-installed dependencies before custom implementation.
+- Keep future implementation surgical and traceable to the user's request.
+- Avoid speculative features, single-use abstractions, unrelated refactors, and
+  future-proofing not required by the current goal.
+- Require observable proof: tests, checks, metrics, screenshots, artifacts, or
+  explicit user review.
+- Never simplify away security, permissions, accessibility, data-loss
+  prevention, trust-boundary validation, or explicitly requested behavior.
 
-**Understanding the idea:**
+## Artifact Shapes
 
-- Check out the current project state first (files, docs, recent commits)
-- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then shape the first sub-project through the normal design flow. Each sub-project gets its own spec.
-- For appropriately-scoped projects, ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
+### Decision Note
 
-**Exploring approaches:**
+Use when the main output is a choice:
 
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
+- Context
+- Decision to make
+- Options considered
+- Recommendation
+- Trade-offs
+- What would change the decision
+- Next step
 
-**Presenting the design:**
+### Spec / PRD / Design Doc
 
-- Once you believe you understand what you're building, present the design
-- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
-- Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
+Scale sections to complexity:
 
-**Design for isolation and clarity:**
+- Context and goal
+- Users or stakeholders
+- In scope
+- Out of scope
+- Requirements
+- Proposed approach
+- Key flows or data flow
+- Edge cases and risks
+- Validation
+- Open assumptions
 
-- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
-- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
-- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
-- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+For repository work, write the reviewed spec to
+`docs/seed/YYYY-MM-DD-<topic>-design.md` unless the user requested a different
+path. For pure discussion or a small decision, an inline artifact is acceptable
+if writing a file would add clutter.
 
-**Working in existing codebases:**
+### Writing Plan
 
-- Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
-- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+Offer a Writing Plan only after the spec or decision is coherent and the user
+wants an implementation handoff. Keep it concise.
 
-## After the Design
+- Implementation objective
+- Minimal reliable route
+- Existing capabilities to prefer before new code
+- Explicit non-goals and anti-bloat constraints
+- Files or areas likely in scope
+- Validation order
+- Risk checkpoints and pause triggers
+- Handoff note for Goal Shaper, if the user later wants a `/goal`
 
-**Documentation:**
+Do not include a runnable `/goal` in Seed. If the user wants one, stop and tell
+them to use Goal Shaper with the reviewed Seed artifact.
 
-- Write the validated design (spec) to `docs/seed/YYYY-MM-DD-<topic>-design.md`
-  - (User preferences for spec location override this default)
-- Do not invoke any other skill to write or review the spec.
-- Do not commit the design document unless the user explicitly requested a commit.
+## Self-Review
 
-**Spec Self-Review:**
-After writing the spec document, look at it with fresh eyes:
+Before presenting the final artifact, check:
 
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
-3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
+1. No `TBD`, `TODO`, placeholders, or hidden assumptions.
+2. No internal contradictions.
+3. Scope fits one decision, spec, or handoff.
+4. Requirements are concrete enough to prevent a wrong implementation.
+5. The quality kernel appears only when implementation-facing.
+6. The artifact does not claim approval to implement.
 
-Fix any issues inline. No need to re-review — just fix and move on.
+If a fresh spec-review pass is useful, use `spec-document-reviewer-prompt.md` as
+the reviewer prompt template. Treat its output as advisory; fix only issues that
+would materially affect future planning or implementation.
 
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
+## Stop Condition
 
-> "Spec written to `<path>`. Please review it and let me know if you want any changes. Once you approve, I will report the final spec path and stop."
-
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only deliver the final path once the user approves.
-
-**Done — STOP here:**
-
-- Report the spec file path to the user and end your turn.
-- Do NOT invoke any other skill.
-- Do NOT start implementation planning or write any code.
-- The user will decide what to do with the spec on their own.
-
-## Key Principles
-
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design, get approval before moving on
-- **Be flexible** - Go back and clarify when something doesn't make sense
-
-## Visual Companion
-
-A browser-based companion for showing mockups, diagrams, and visual options during idea shaping. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
-
-**Offering the companion:** When you anticipate that upcoming questions will involve visual content (mockups, layouts, diagrams), offer it once for consent:
-> "Some of what we're working on might be easier to explain if I can show it to you in a web browser. I can put together mockups, diagrams, comparisons, and other visuals as we go. This feature is still new and can be token-intensive. Want to try it? (Requires opening a local URL)"
-
-**This offer MUST be its own message.** Do not combine it with clarifying questions, context summaries, or any other content. The message should contain ONLY the offer above and nothing else. Wait for the user's response before continuing. If they decline, proceed with text-only discussion.
-
-**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
-
-- **Use the browser** for content that IS visual — mockups, wireframes, layout comparisons, architecture diagrams, side-by-side visual designs
-- **Use the terminal** for content that is text — requirements questions, conceptual choices, tradeoff lists, A/B/C/D text options, scope decisions
-
-A question about a UI topic is not automatically a visual question. "What does personality mean in this context?" is a conceptual question — use the terminal. "Which wizard layout works better?" is a visual question — use the browser.
-
-If they agree to the companion, read the detailed guide before proceeding:
-`skills/seed/visual-companion.md`
+The terminal state is delivering the reviewed artifact. STOP. Do not invoke any
+other skill, do not call Goal Shaper, do not write implementation code, and do
+not begin a `/goal` package. The user decides the next workflow.

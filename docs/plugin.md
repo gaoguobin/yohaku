@@ -132,8 +132,9 @@ codex plugin marketplace upgrade yohaku --json
 codex plugin add goal-shaper@yohaku --json
 ```
 
-For release changes, bump `plugins/goal-shaper/.codex-plugin/plugin.json`
-`version`, run validation, publish the repository, then verify the update path.
+For release changes, bump the changed plugin's
+`plugins/<plugin-name>/.codex-plugin/plugin.json` `version`, run validation,
+publish the repository, then verify the update path.
 
 `codex plugin marketplace upgrade` is only for Git marketplace snapshots. It is
 not needed for a local repo marketplace and may fail there.

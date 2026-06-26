@@ -7,6 +7,9 @@
   checking the Goal Shaper entry.
 - Update public docs to describe Yohaku as a multi-plugin marketplace.
 - Generalize localized UI guides for installing and invoking any Yohaku plugin.
+- Upgrade Seed 0.1.5 to support decision artifacts, optional reviewed Writing
+  Plans, and conditional implementation-quality guidance without starting
+  implementation.
 
 ## 0.1.8 - 2026-06-18
 

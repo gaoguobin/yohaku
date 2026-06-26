@@ -46,12 +46,25 @@ def validator_paths(root: Path):
         PROJECT_SKILL_DIR=root / ".agents" / "skills" / "goal-shaper",
         PLUGIN_DIR=plugin_dir,
         PLUGIN_SKILL_DIR=plugin_dir / "skills" / "goal-shaper",
+        SEED_PLUGIN_DIR=root / "plugins" / "seed",
+        SEED_SKILL_DIR=root / "plugins" / "seed" / "skills" / "seed",
+        SEED_PLUGIN_MANIFEST_PATH=root
+        / "plugins"
+        / "seed"
+        / ".codex-plugin"
+        / "plugin.json",
         SKILL_DIR=root / ".agents" / "skills" / "goal-shaper",
         MARKETPLACE_PATH=root / ".agents" / "plugins" / "marketplace.json",
         PLUGIN_MANIFEST_PATH=plugin_dir / ".codex-plugin" / "plugin.json",
         CHANGELOG_PATH=root / "CHANGELOG.md",
     ):
         yield
+
+
+def replace_in_file(root: Path, relative_path: str, old: str, new: str) -> None:
+    path = root / relative_path
+    updated = path.read_text(encoding="utf-8").replace(old, new)
+    path.write_text(updated, encoding="utf-8")
 
 
 def run_validator(root: Path) -> tuple[int, str]:
@@ -268,6 +281,48 @@ class ValidatorIntegrationTests(unittest.TestCase):
 
         self.assertEqual(status, 1, output)
         self.assertIn("interface.websiteURL", output)
+
+    def test_seed_skill_requires_writing_plan_handoff_boundary(self) -> None:
+        with copied_repo_fixture() as root:
+            replace_in_file(
+                root,
+                "plugins/seed/skills/seed/SKILL.md",
+                "A Writing Plan is a handoff artifact, not an execution mode",
+                "A Writing Plan is an implementation plan",
+            )
+
+            status, output = run_validator(root)
+
+        self.assertEqual(status, 1, output)
+        self.assertIn("seed SKILL.md: missing 'seed contract'", output)
+        self.assertIn("Writing Plan is a handoff artifact", output)
+
+    def test_seed_skill_requires_conditional_quality_kernel(self) -> None:
+        with copied_repo_fixture() as root:
+            replace_in_file(
+                root,
+                "plugins/seed/skills/seed/SKILL.md",
+                "Apply this kernel only when the artifact will guide implementation",
+                "Apply this kernel to every Seed artifact",
+            )
+
+            status, output = run_validator(root)
+
+        self.assertEqual(status, 1, output)
+        self.assertIn("seed SKILL.md: missing 'seed contract'", output)
+        self.assertIn("Apply this kernel only", output)
+
+    def test_seed_manifest_rejects_unused_runtime_surfaces(self) -> None:
+        with copied_repo_fixture() as root:
+            manifest_path = root / "plugins" / "seed" / ".codex-plugin" / "plugin.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["hooks"] = {}
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            status, output = run_validator(root)
+
+        self.assertEqual(status, 1, output)
+        self.assertIn("seed plugin.json: unsupported or unnecessary fields present", output)
 
     def test_marketplace_allows_other_yohaku_plugins(self) -> None:
         with copied_repo_fixture() as root:

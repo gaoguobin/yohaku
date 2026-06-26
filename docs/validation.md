@@ -24,6 +24,9 @@ The repository validator checks the current package state:
 - `SKILL.md` keeps the core trigger and stop boundaries.
 - Schema, rubric, templates, examples, and `agents/openai.yaml` stay aligned.
 - Plugin packaging exists under `plugins/goal-shaper/`.
+- Seed exists under `plugins/seed/` and keeps its reviewed-artifact stop
+  boundary, optional Writing Plan handoff boundary, and conditional
+  implementation-quality guidance.
 - `.agents/skills/goal-shaper` and
   `plugins/goal-shaper/skills/goal-shaper` stay byte-for-byte in sync.
 - `.agents/plugins/marketplace.json` is the `yohaku` marketplace and every
@@ -44,6 +47,8 @@ The repository validator checks the current package state:
 - It does not verify Codex App chip rendering; recheck `$goal-shaper` display
   after global install or plugin packaging.
 - It does not replace manual scenario testing for long-context support specs.
+- It does not prove Seed output quality across every possible brainstorm or
+  spec request.
 - It does not install, reinstall, or remove the plugin from the local Codex
   configuration. For an isolated lifecycle smoke, see
   [Plugin packaging](plugin.md#lifecycle-smoke).

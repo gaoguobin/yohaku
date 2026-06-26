@@ -19,6 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT_SKILL_DIR = ROOT / ".agents" / "skills" / "goal-shaper"
 PLUGIN_DIR = ROOT / "plugins" / "goal-shaper"
 PLUGIN_SKILL_DIR = PLUGIN_DIR / "skills" / "goal-shaper"
+SEED_PLUGIN_DIR = ROOT / "plugins" / "seed"
+SEED_SKILL_DIR = SEED_PLUGIN_DIR / "skills" / "seed"
+SEED_PLUGIN_MANIFEST_PATH = SEED_PLUGIN_DIR / ".codex-plugin" / "plugin.json"
 SKILL_DIR = PROJECT_SKILL_DIR
 MARKETPLACE_PATH = ROOT / ".agents" / "plugins" / "marketplace.json"
 PLUGIN_MANIFEST_PATH = PLUGIN_DIR / ".codex-plugin" / "plugin.json"
@@ -430,6 +433,54 @@ def validate_agent_metadata(failures: list[str]) -> None:
         require_contains(failures, text, phrase, "openai.yaml", "interface metadata")
 
 
+def validate_seed_skill_contract(failures: list[str]) -> None:
+    skill_path = SEED_SKILL_DIR / "SKILL.md"
+    if not skill_path.is_file():
+        fail(failures, f"missing required file: {skill_path.relative_to(ROOT)}")
+        return
+
+    text = skill_path.read_text(encoding="utf-8")
+    frontmatter = parse_frontmatter(text)
+    if frontmatter.get("name") != "seed":
+        fail(failures, "seed SKILL.md: frontmatter name must be seed")
+
+    description = frontmatter.get("description", "")
+    for phrase in [
+        "reviewed specs",
+        "decision artifacts",
+        "optional Writing Plans",
+        "stop after the reviewed artifact",
+        "do not code",
+    ]:
+        if phrase not in description:
+            fail(failures, f"seed SKILL.md: description missing trigger/boundary phrase: {phrase}")
+
+    for boundary in [
+        "Seed owns the spec or decision artifact",
+        "Goal Shaper owns the later `/goal` package",
+        "Do NOT invoke implementation skills",
+        "call Goal Shaper",
+        "run `/goal`",
+        "Stop after the reviewed artifact",
+        "A Writing Plan is a handoff artifact, not an execution mode",
+        "not approval to begin that handoff automatically",
+        "Do not produce a Writing Plan before the spec or decision is coherent",
+        "Choose the smallest artifact",
+        "Decision note",
+        "Lightweight spec",
+        "Full spec / PRD / design doc",
+        "Writing Plan",
+        "If the request is too broad for one artifact",
+        "do not force a spec",
+        "Apply this kernel only when the artifact will guide implementation",
+        "Do not apply it to pure explanation",
+        "Prefer standard library, platform-native features",
+        "Do not include a runnable `/goal` in Seed",
+        "The terminal state is delivering the reviewed artifact",
+    ]:
+        require_contains(failures, text, boundary, "seed SKILL.md", "seed contract")
+
+
 def validate_plugin_manifest(failures: list[str]) -> None:
     manifest = load_json(PLUGIN_MANIFEST_PATH, failures)
     if not manifest:
@@ -487,6 +538,46 @@ def validate_plugin_manifest(failures: list[str]) -> None:
     unsupported = {"apps", "mcpServers", "hooks"} & set(manifest)
     if unsupported:
         fail(failures, f"plugin.json: unsupported or unnecessary fields present: {sorted(unsupported)}")
+
+
+def validate_seed_plugin_manifest(failures: list[str]) -> None:
+    manifest = load_json(SEED_PLUGIN_MANIFEST_PATH, failures)
+    if not manifest:
+        return
+
+    if manifest.get("name") != "seed":
+        fail(failures, "seed plugin.json: `name` must be `seed`")
+    if manifest.get("skills") != "./skills/":
+        fail(failures, "seed plugin.json: `skills` must be `./skills/`")
+
+    interface = manifest.get("interface")
+    if not isinstance(interface, dict):
+        fail(failures, "seed plugin.json: `interface` must be an object")
+        return
+
+    for field in ["displayName", "shortDescription", "longDescription", "defaultPrompt", "composerIcon", "logo"]:
+        if field not in interface:
+            fail(failures, f"seed plugin.json: missing interface field `{field}`")
+
+    long_description = interface.get("longDescription")
+    if isinstance(long_description, str):
+        for phrase in ["reviewed spec or decision artifact", "Writing Plan", "stop before coding"]:
+            if phrase not in long_description:
+                fail(failures, f"seed plugin.json: longDescription missing `{phrase}`")
+
+    for field, expected_path in {
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/icon.png",
+    }.items():
+        if interface.get(field) != expected_path:
+            fail(failures, f"seed plugin.json: `interface.{field}` must be `{expected_path}`")
+            continue
+        if not (SEED_PLUGIN_DIR / expected_path[2:]).is_file():
+            fail(failures, f"seed plugin.json: `interface.{field}` points to a missing file")
+
+    unsupported = {"apps", "mcpServers", "hooks"} & set(manifest)
+    if unsupported:
+        fail(failures, f"seed plugin.json: unsupported or unnecessary fields present: {sorted(unsupported)}")
 
 
 def validate_marketplace(failures: list[str]) -> None:
@@ -657,7 +748,9 @@ def main() -> int:
     validate_templates(failures)
     validate_examples(failures)
     validate_agent_metadata(failures)
+    validate_seed_skill_contract(failures)
     validate_plugin_manifest(failures)
+    validate_seed_plugin_manifest(failures)
     validate_marketplace(failures)
     validate_release_metadata(failures)
 
@@ -671,6 +764,7 @@ def main() -> int:
     print(f"checked {len(REQUIRED_FILES)} skill files under {SKILL_DIR}")
     print(f"checked packaged skill sync under {PLUGIN_SKILL_DIR}")
     print(f"checked plugin manifest under {PLUGIN_MANIFEST_PATH}")
+    print(f"checked Seed plugin contract under {SEED_SKILL_DIR}")
     print(f"checked repo marketplace under {MARKETPLACE_PATH}")
     return 0
 

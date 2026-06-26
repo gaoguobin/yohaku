@@ -16,15 +16,16 @@ After Codex loads the marketplace, it appears as `Yohaku`.
 Current plugins:
 
 - **Goal Shaper**: turns rough tasks into verifiable Codex Goal mode packages.
-- **Seed**: turns rough ideas into reviewed specs, then stops before
-  implementation.
+- **Seed**: turns rough ideas into reviewed specs, decisions, or compact
+  handoff plans, then stops before implementation.
 
 ## What It Does Not Do
 
 - Yohaku plugins do not run implementation work unless a specific plugin says
   so.
 - Goal Shaper does not run `/goal` or call Codex runtime goal tools.
-- Seed does not write implementation plans or code before the spec is reviewed.
+- Seed does not write code or start implementation; any Writing Plan is only a
+  reviewed handoff artifact.
 
 ## Use As A Repo Skill
 
