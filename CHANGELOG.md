@@ -10,6 +10,9 @@
 - Upgrade Seed 0.1.5 to support decision artifacts, optional reviewed Writing
   Plans, and conditional implementation-quality guidance without starting
   implementation.
+- Switch Yohaku to a plugin-first repository layout by removing the duplicate
+  Goal Shaper project skill entry and validating the packaged plugin skill as
+  the canonical source.
 
 ## 0.1.8 - 2026-06-18
 

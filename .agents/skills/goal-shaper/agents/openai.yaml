@@ -1,4 +1,0 @@
-interface:
-  display_name: "Goal Shaper"
-  short_description: "Shape fuzzy requests into Codex goals"
-  default_prompt: "Use $goal-shaper to shape my rough task into a safe Codex /goal."

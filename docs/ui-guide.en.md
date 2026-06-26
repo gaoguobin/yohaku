@@ -59,8 +59,9 @@ Type `$goal-shaper` or `$seed` when you want the most precise skill invocation.
 
 ## Update
 
-Restart Codex App, open the plugin details page, and confirm the version. If
-the version is still old, use the CLI update flow in `UPDATE.md`.
+Restart Codex App after a Yohaku update, open the plugin details page, and
+confirm the version. If the version is still old after restart, use the CLI
+update flow in `UPDATE.md`.
 
 ## Uninstall
 

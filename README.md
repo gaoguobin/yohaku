@@ -27,20 +27,6 @@ Current plugins:
 - Seed does not write code or start implementation; any Writing Plan is only a
   reviewed handoff artifact.
 
-## Use As A Repo Skill
-
-From this repository, invoke the project skill:
-
-```text
-$goal-shaper Help me turn this request into a Codex Goal mode package.
-```
-
-The project-scope skill lives at:
-
-```text
-.agents/skills/goal-shaper/
-```
-
 ## Use As A Marketplace Plugin
 
 Goal Shaper and Seed are packaged as Codex plugins in the `yohaku`
@@ -111,7 +97,6 @@ When the local system skills are available, also run:
 ```bash
 python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/goal-shaper
 python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seed
-python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" .agents/skills/goal-shaper
 python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/goal-shaper/skills/goal-shaper
 python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/seed/skills/seed
 ```

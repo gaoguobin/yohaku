@@ -9,8 +9,6 @@ installation and local development testing.
 .agents/
   plugins/
     marketplace.json
-  skills/
-    goal-shaper/
 plugins/
   goal-shaper/
     .codex-plugin/plugin.json
@@ -30,18 +28,9 @@ plugins/
         scripts/
 ```
 
-The project skill under `.agents/skills/goal-shaper` preserves the plain
-`$goal-shaper` development entrypoint. The packaged skill under
-`plugins/goal-shaper/skills/goal-shaper` is the plugin distribution copy.
-`python3 scripts/validate_goal_shaper.py` checks that both copies stay in sync.
-
-Seed is distributed only as a packaged Yohaku plugin in this repository. Its
-source skill currently comes from the Seed skill package and lives under
-`plugins/seed/skills/seed`.
-
-Do not replace the project skill with a symlink. In local testing, a symlink
-caused Codex to surface the skill as `goal-shaper:goal-shaper` instead of the
-plain `$goal-shaper` project skill.
+Yohaku is plugin-first: distributable skills live under `plugins/*/skills/*`,
+and `.agents/plugins/marketplace.json` exposes them as the repo marketplace.
+This avoids duplicate project-skill and plugin-skill entries in Codex selectors.
 
 ## Validation
 

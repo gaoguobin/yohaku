@@ -4,7 +4,6 @@ import contextlib
 import importlib.util
 import io
 import json
-import os
 import shutil
 import tempfile
 import unittest
@@ -43,7 +42,6 @@ def validator_paths(root: Path):
     with mock.patch.multiple(
         validator,
         ROOT=root,
-        PROJECT_SKILL_DIR=root / ".agents" / "skills" / "goal-shaper",
         PLUGIN_DIR=plugin_dir,
         PLUGIN_SKILL_DIR=plugin_dir / "skills" / "goal-shaper",
         SEED_PLUGIN_DIR=root / "plugins" / "seed",
@@ -53,7 +51,7 @@ def validator_paths(root: Path):
         / "seed"
         / ".codex-plugin"
         / "plugin.json",
-        SKILL_DIR=root / ".agents" / "skills" / "goal-shaper",
+        SKILL_DIR=plugin_dir / "skills" / "goal-shaper",
         MARKETPLACE_PATH=root / ".agents" / "plugins" / "marketplace.json",
         PLUGIN_MANIFEST_PATH=plugin_dir / ".codex-plugin" / "plugin.json",
         CHANGELOG_PATH=root / "CHANGELOG.md",
@@ -74,16 +72,12 @@ def run_validator(root: Path) -> tuple[int, str]:
     return status, stdout.getvalue()
 
 
-def replace_in_skill_copies(
+def replace_in_goal_shaper_skill(
     root: Path, relative_path: str, old: str, new: str
 ) -> None:
-    for skill_root in [
-        root / ".agents" / "skills" / "goal-shaper",
-        root / "plugins" / "goal-shaper" / "skills" / "goal-shaper",
-    ]:
-        path = skill_root / relative_path
-        updated = path.read_text(encoding="utf-8").replace(old, new)
-        path.write_text(updated, encoding="utf-8")
+    path = root / "plugins" / "goal-shaper" / "skills" / "goal-shaper" / relative_path
+    updated = path.read_text(encoding="utf-8").replace(old, new)
+    path.write_text(updated, encoding="utf-8")
 
 
 class ValidatorUnitTests(unittest.TestCase):
@@ -130,7 +124,7 @@ class ValidatorIntegrationTests(unittest.TestCase):
 
     def test_entrypoint_boundary_loss_fails_even_when_skill_copies_match(self) -> None:
         with copied_repo_fixture() as root:
-            replace_in_skill_copies(
+            replace_in_goal_shaper_skill(
                 root,
                 "SKILL.md",
                 "Do not invent exact validation commands",
@@ -145,7 +139,7 @@ class ValidatorIntegrationTests(unittest.TestCase):
 
     def test_goal_template_requires_copy_instruction(self) -> None:
         with copied_repo_fixture() as root:
-            replace_in_skill_copies(
+            replace_in_goal_shaper_skill(
                 root,
                 "templates/goal-package.md",
                 "Copy only the `/goal` code block to run it",
@@ -159,7 +153,7 @@ class ValidatorIntegrationTests(unittest.TestCase):
 
     def test_support_spec_template_blocks_unwritten_spec_goal(self) -> None:
         with copied_repo_fixture() as root:
-            replace_in_skill_copies(
+            replace_in_goal_shaper_skill(
                 root,
                 "templates/support-spec.md",
                 "Before the support spec file exists, do not include a copyable `/goal` block",
@@ -173,7 +167,7 @@ class ValidatorIntegrationTests(unittest.TestCase):
 
     def test_entrypoint_requires_missing_target_skill_boundary(self) -> None:
         with copied_repo_fixture() as root:
-            replace_in_skill_copies(
+            replace_in_goal_shaper_skill(
                 root,
                 "SKILL.md",
                 "Selecting or invoking this skill is not target selection",
@@ -185,50 +179,6 @@ class ValidatorIntegrationTests(unittest.TestCase):
         self.assertEqual(status, 1, output)
         self.assertIn("SKILL.md: missing 'core boundary'", output)
         self.assertIn("not target selection", output)
-
-    def test_project_and_packaged_skill_drift_fails(self) -> None:
-        with copied_repo_fixture() as root:
-            plugin_skill = (
-                root
-                / "plugins"
-                / "goal-shaper"
-                / "skills"
-                / "goal-shaper"
-                / "SKILL.md"
-            )
-            plugin_text = plugin_skill.read_text(encoding="utf-8")
-            plugin_skill.write_text(
-                plugin_text + "\n<!-- plugin-only drift -->\n", encoding="utf-8"
-            )
-
-            status, output = run_validator(root)
-
-        self.assertEqual(status, 1, output)
-        self.assertIn("project skill and packaged skill differ", output)
-        self.assertIn("content differs: SKILL.md", output)
-
-    def test_same_size_same_mtime_skill_drift_fails(self) -> None:
-        with copied_repo_fixture() as root:
-            project_skill = root / ".agents" / "skills" / "goal-shaper" / "SKILL.md"
-            plugin_skill = (
-                root
-                / "plugins"
-                / "goal-shaper"
-                / "skills"
-                / "goal-shaper"
-                / "SKILL.md"
-            )
-            project_text = project_skill.read_text(encoding="utf-8")
-            plugin_text = project_text.replace("Goal Shaper", "Goal shaker", 1)
-            plugin_skill.write_text(plugin_text, encoding="utf-8")
-            stat = project_skill.stat()
-            os.utime(plugin_skill, (stat.st_atime, stat.st_mtime))
-
-            status, output = run_validator(root)
-
-        self.assertEqual(status, 1, output)
-        self.assertIn("project skill and packaged skill differ", output)
-        self.assertIn("content differs: SKILL.md", output)
 
     def test_plugin_manifest_rejects_unused_runtime_surfaces(self) -> None:
         with copied_repo_fixture() as root:
@@ -446,7 +396,8 @@ class ValidatorIntegrationTests(unittest.TestCase):
         with copied_repo_fixture() as root:
             rubric = (
                 root
-                / ".agents"
+                / "plugins"
+                / "goal-shaper"
                 / "skills"
                 / "goal-shaper"
                 / "references"

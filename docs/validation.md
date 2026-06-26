@@ -20,15 +20,14 @@ representative failure paths with isolated repository fixtures.
 
 The repository validator checks the current package state:
 
-- Required skill files exist under `.agents/skills/goal-shaper/`.
+- Required Goal Shaper skill files exist under
+  `plugins/goal-shaper/skills/goal-shaper/`.
 - `SKILL.md` keeps the core trigger and stop boundaries.
 - Schema, rubric, templates, examples, and `agents/openai.yaml` stay aligned.
 - Plugin packaging exists under `plugins/goal-shaper/`.
 - Seed exists under `plugins/seed/` and keeps its reviewed-artifact stop
   boundary, optional Writing Plan handoff boundary, and conditional
   implementation-quality guidance.
-- `.agents/skills/goal-shaper` and
-  `plugins/goal-shaper/skills/goal-shaper` stay byte-for-byte in sync.
 - `.agents/plugins/marketplace.json` is the `yohaku` marketplace and every
   listed plugin points to a real local plugin package.
 - `plugins/goal-shaper/.codex-plugin/plugin.json` keeps installable plugin

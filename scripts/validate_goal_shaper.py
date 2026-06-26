@@ -11,18 +11,16 @@ from __future__ import annotations
 import re
 import sys
 import json
-import hashlib
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT_SKILL_DIR = ROOT / ".agents" / "skills" / "goal-shaper"
 PLUGIN_DIR = ROOT / "plugins" / "goal-shaper"
 PLUGIN_SKILL_DIR = PLUGIN_DIR / "skills" / "goal-shaper"
 SEED_PLUGIN_DIR = ROOT / "plugins" / "seed"
 SEED_SKILL_DIR = SEED_PLUGIN_DIR / "skills" / "seed"
 SEED_PLUGIN_MANIFEST_PATH = SEED_PLUGIN_DIR / ".codex-plugin" / "plugin.json"
-SKILL_DIR = PROJECT_SKILL_DIR
+SKILL_DIR = PLUGIN_SKILL_DIR
 MARKETPLACE_PATH = ROOT / ".agents" / "plugins" / "marketplace.json"
 PLUGIN_MANIFEST_PATH = PLUGIN_DIR / ".codex-plugin" / "plugin.json"
 CHANGELOG_PATH = ROOT / "CHANGELOG.md"
@@ -185,10 +183,6 @@ def load_json(relative_path: Path, failures: list[str]) -> dict:
     return payload
 
 
-def file_digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def validate_required_files(failures: list[str]) -> None:
     if not SKILL_DIR.exists():
         fail(failures, f"missing skill directory: {SKILL_DIR}")
@@ -207,45 +201,6 @@ def validate_required_files(failures: list[str]) -> None:
         path = ROOT / relative
         if not path.is_file():
             fail(failures, f"missing required release file: {relative}")
-
-
-def validate_plugin_skill_sync(failures: list[str]) -> None:
-    if PROJECT_SKILL_DIR.is_symlink():
-        fail(failures, ".agents/skills/goal-shaper must be a real directory, not a symlink")
-        return
-
-    if not PROJECT_SKILL_DIR.is_dir():
-        fail(failures, ".agents/skills/goal-shaper must exist as the project skill")
-        return
-    if not PLUGIN_SKILL_DIR.is_dir():
-        fail(failures, "plugins/goal-shaper/skills/goal-shaper must exist as the packaged skill")
-        return
-
-    mismatches: list[str] = []
-    project_files = {
-        path.relative_to(PROJECT_SKILL_DIR): path
-        for path in PROJECT_SKILL_DIR.rglob("*")
-        if path.is_file()
-    }
-    plugin_files = {
-        path.relative_to(PLUGIN_SKILL_DIR): path
-        for path in PLUGIN_SKILL_DIR.rglob("*")
-        if path.is_file()
-    }
-
-    for relative in sorted(project_files.keys() - plugin_files.keys()):
-        mismatches.append(f"project-only: {relative.as_posix()}")
-    for relative in sorted(plugin_files.keys() - project_files.keys()):
-        mismatches.append(f"plugin-only: {relative.as_posix()}")
-    for relative in sorted(project_files.keys() & plugin_files.keys()):
-        if file_digest(project_files[relative]) != file_digest(plugin_files[relative]):
-            mismatches.append(f"content differs: {relative.as_posix()}")
-
-    if mismatches:
-        fail(
-            failures,
-            "project skill and packaged skill differ: " + "; ".join(mismatches[:8]),
-        )
 
 
 def validate_ascii_and_size(failures: list[str]) -> None:
@@ -740,7 +695,6 @@ def main() -> int:
             print(f"FAIL {item}")
         return 1
 
-    validate_plugin_skill_sync(failures)
     validate_ascii_and_size(failures)
     validate_skill_entrypoint(failures)
     validate_schema(failures)
@@ -762,7 +716,6 @@ def main() -> int:
 
     print("goal-shaper validation passed")
     print(f"checked {len(REQUIRED_FILES)} skill files under {SKILL_DIR}")
-    print(f"checked packaged skill sync under {PLUGIN_SKILL_DIR}")
     print(f"checked plugin manifest under {PLUGIN_MANIFEST_PATH}")
     print(f"checked Seed plugin contract under {SEED_SKILL_DIR}")
     print(f"checked repo marketplace under {MARKETPLACE_PATH}")

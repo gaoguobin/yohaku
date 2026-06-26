@@ -6,14 +6,17 @@ plugin version you intend to use.
 
 ## UI Users
 
-Use the App to check the installed version after a restart. If the version is
-still old, use the CLI flow below.
+Restart Codex App after a published Yohaku update, then check the plugin
+details page. In App testing, Git-backed marketplace metadata may continue to
+show the older version until the App restarts.
 
 1. Restart Codex App.
 2. Open **Plugins**.
 3. Select the `Yohaku` marketplace.
 4. Open the plugin details page and confirm the version.
 5. Start a new Codex thread.
+
+If the version is still old after a restart, use the CLI flow below.
 
 ## CLI Users
 
